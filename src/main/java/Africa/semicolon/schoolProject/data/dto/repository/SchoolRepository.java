@@ -14,15 +14,7 @@ import java.util.List;
 @Repository
 public interface SchoolRepository extends MongoRepository<School, String> {
 
-    School findByStudents(List<Student> students);
-
-
-    School findStudentById(String id);
-
     School findSchoolBySchoolNameIgnoreCase(String name);
     School findSchoolBySchoolName(String name);
-
-
-    void findCourseByName(String courseName);
 
 }

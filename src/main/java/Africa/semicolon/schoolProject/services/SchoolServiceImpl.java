@@ -146,15 +146,6 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
 
-//    @Override
-//    public Course findACourse( String courseName, School school,) {
-//        for(Course course : school.getCourses()){
-//            if(course.getCourseName().equals(courseName)){
-//                return course;
-//            }
-//        }
-//        return null;
-//    }
 
 
 }
