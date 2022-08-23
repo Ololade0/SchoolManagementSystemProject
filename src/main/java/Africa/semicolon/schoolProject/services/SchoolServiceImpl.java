@@ -1,9 +1,10 @@
 package Africa.semicolon.schoolProject.services;
 
-import Africa.semicolon.schoolProject.data.dto.model.Course;
-import Africa.semicolon.schoolProject.data.dto.model.School;
-import Africa.semicolon.schoolProject.data.dto.model.Student;
-import Africa.semicolon.schoolProject.data.dto.repository.SchoolRepository;
+import Africa.semicolon.schoolProject.data.model.Course;
+import Africa.semicolon.schoolProject.data.model.School;
+import Africa.semicolon.schoolProject.data.model.Student;
+import Africa.semicolon.schoolProject.data.repository.CourseRepository;
+import Africa.semicolon.schoolProject.data.repository.SchoolRepository;
 import Africa.semicolon.schoolProject.dto.request.*;
 import Africa.semicolon.schoolProject.dto.response.AdmitStudentResponse;
 import Africa.semicolon.schoolProject.dto.response.AllStudentResponse;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class SchoolServiceImpl implements SchoolService {
@@ -24,6 +26,8 @@ public class SchoolServiceImpl implements SchoolService {
     private StudentService studentServices;
     @Autowired
     private CourseServices courseServices;
+    @Autowired
+    private CourseRepository courseRepository;
 
 
     @Override
@@ -34,7 +38,6 @@ public class SchoolServiceImpl implements SchoolService {
         newStudent.setGender(admitStudentRequest.getGender());
         newStudent.setStudentAge(admitStudentRequest.getStudentAge());
         newStudent.setEmail(admitStudentRequest.getEmailAddress());
-
         var schoolFound = schoolRepository.findSchoolBySchoolNameIgnoreCase(admitStudentRequest.getSchoolName());
         if (schoolFound != null) {
             studentServices.saveNewStudent(newStudent);
@@ -61,17 +64,17 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public void deleteStudent(DeleteStudentRequest deleteStudentRequest) {
-        var schoolFound = schoolRepository.findSchoolBySchoolNameIgnoreCase(deleteStudentRequest.getSchoolName());
+        var schoolFound = schoolRepository.findSchoolById(deleteStudentRequest.getId());
         if (schoolFound != null) {
             for (var studentToDel : schoolFound.getStudents()) {
                 if (Objects.equals(studentToDel.getId(), deleteStudentRequest.getStudentId())) {
                     studentServices.deleteStudent(studentToDel);
                     schoolFound.getStudents().remove(studentToDel);
-                    break;
+                    schoolRepository.save(schoolFound);
+                    return;
                 }
             }
         }
-
     }
 
     @Override
@@ -117,38 +120,64 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Override
-    public void deleteCourse(DeleteCourseRequest deleteCourseRequest) {
-        School foundSchool = schoolRepository.findSchoolBySchoolName(deleteCourseRequest.getSchoolName());
+    public String deleteCourse(DeleteCourseRequest deleteCourseRequest) {
+        var foundSchool = schoolRepository.findSchoolById(deleteCourseRequest.getId());
         if (foundSchool != null) {
             for (var courseToDel : foundSchool.getCourses()) {
-                if (Objects.equals(courseToDel.getCourseId(), deleteCourseRequest.getCourseId()))
+                if (Objects.equals(courseToDel.getCourseId(), deleteCourseRequest.getCourseId())) {
                     courseServices.delete(courseToDel);
-                foundSchool.getCourses().remove(courseToDel);
-                break;
+                    foundSchool.getCourses().remove(courseToDel);
+                    schoolRepository.save(foundSchool);
+                    return "deleted successfully";
+                }
+
             }
         }
+        return "error";
     }
 
     @Override
     public List<Course> getAllCourses() {
-       return schoolRepository.findAll().get(0).getCourses();
+        return schoolRepository.findAll().get(0).getCourses();
     }
 
     @Override
-    public Course findACourse( String courseName) {
-        School school = new School();
-        for(Course course : school.getCourses()){
-            if(course.getCourseName().equals(courseName)){
-                return course;
-            }
+    public Course getCourseByName(String courseName) {
+        return courseRepository.findByCourseName(courseName);
+    }
+
+    @Override
+    public Optional<Course> getACourses(GetACourseRequest getACourseRequest) {
+        return courseRepository.findById(getACourseRequest.getCourseId());
+    }
+
+    @Override
+    public School findSchoolByName(String schoolName) {
+        School foundSchool = schoolRepository.findSchoolBySchoolNameIgnoreCase(schoolName);
+        if (foundSchool == null) {
+            throw new SchoolExistException("School not found!");
         }
-        return null;
+        return foundSchool;
+    }
+
+    @Override
+    public long size() {
+        return schoolRepository.count();
+    }
+
+    @Override
+    public School save(School newSchool) {
+        return schoolRepository.save(newSchool);
+    }
+
+    @Override
+    public List<School> findAll() {
+        return schoolRepository.findAll();
     }
 
 
-
-
 }
+
 
 
 

@@ -1,4 +1,4 @@
-package Africa.semicolon.schoolProject.data.dto.model;
+package Africa.semicolon.schoolProject.data.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +20,7 @@ public class School {
     @DBRef
     private List<Student> students = new ArrayList<>();
     private List<Course> courses = new ArrayList<>();
+
 
 
 }

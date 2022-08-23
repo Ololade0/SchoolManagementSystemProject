@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 @NoArgsConstructor
 public class DeleteCourseRequest {
-
+private String id;
     private String schoolName;
     private String courseId;
     private String courseName;

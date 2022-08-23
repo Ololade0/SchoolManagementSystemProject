@@ -10,4 +10,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class GetACourseRequest {
     private String courseName;
     private String courseId;
+    private String schoolName;
+
 }

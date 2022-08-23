@@ -1,7 +1,7 @@
 package Africa.semicolon.schoolProject.services;
 
-import Africa.semicolon.schoolProject.data.dto.model.Course;
-import Africa.semicolon.schoolProject.data.dto.repository.CourseRepository;
+import Africa.semicolon.schoolProject.data.model.Course;
+import Africa.semicolon.schoolProject.data.repository.CourseRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

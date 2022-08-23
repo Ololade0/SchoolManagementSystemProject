@@ -1,7 +1,7 @@
 package Africa.semicolon.schoolProject.services;
 
-import Africa.semicolon.schoolProject.data.dto.model.Student;
-import Africa.semicolon.schoolProject.data.dto.repository.StudentRepository;
+import Africa.semicolon.schoolProject.data.model.Student;
+import Africa.semicolon.schoolProject.data.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +30,7 @@ public class StudentServiceImpl implements StudentService{
 
     @Override
     public List<Student> getAllStudents() {
+
         return studentRepository.findAll();
     }
 }

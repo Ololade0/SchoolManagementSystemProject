@@ -1,4 +1,4 @@
-package Africa.semicolon.schoolProject.data.dto.model;
+package Africa.semicolon.schoolProject.data.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

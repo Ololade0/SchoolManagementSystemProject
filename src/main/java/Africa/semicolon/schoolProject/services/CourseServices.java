@@ -1,6 +1,6 @@
 package Africa.semicolon.schoolProject.services;
 
-import Africa.semicolon.schoolProject.data.dto.model.Course;
+import Africa.semicolon.schoolProject.data.model.Course;
 
 
 

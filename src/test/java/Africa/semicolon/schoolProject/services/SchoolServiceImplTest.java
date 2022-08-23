@@ -1,18 +1,19 @@
 package Africa.semicolon.schoolProject.services;
 
-import Africa.semicolon.schoolProject.data.dto.model.Course;
-import Africa.semicolon.schoolProject.data.dto.model.School;
-import Africa.semicolon.schoolProject.data.dto.repository.CourseRepository;
-import Africa.semicolon.schoolProject.data.dto.repository.SchoolRepository;
+import Africa.semicolon.schoolProject.data.model.Course;
+import Africa.semicolon.schoolProject.data.model.School;
+import Africa.semicolon.schoolProject.data.model.Student;
+import Africa.semicolon.schoolProject.data.repository.CourseRepository;
+import Africa.semicolon.schoolProject.data.repository.SchoolRepository;
 
-import Africa.semicolon.schoolProject.dto.request.AdmitStudentRequest;
-import Africa.semicolon.schoolProject.dto.request.CreateCourseRequest;
-import Africa.semicolon.schoolProject.dto.request.DeleteCourseRequest;
-import Africa.semicolon.schoolProject.dto.request.DeleteStudentRequest;
+import Africa.semicolon.schoolProject.dto.request.*;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -30,10 +31,15 @@ public class SchoolServiceImplTest {
     private CourseRepository courseRepository;
 
 
+
+
+
     @AfterEach
     void setUp() {
         schoolService.deleteAll();
     }
+
+
 
     @Test
     void schoolCanBeCreatedTest() {
@@ -47,7 +53,10 @@ public class SchoolServiceImplTest {
         School newSchool = new School();
         newSchool.setSchoolName("semicolon");
         newSchool.setSchoolLocation("Yaba");
-        schoolRepository.save(newSchool);
+        schoolService.save(newSchool);
+        assertEquals("semicolon", schoolService.findAll().get(0).getSchoolName());
+        assertEquals("semicolon",schoolService.findSchoolByName("semicolon").getSchoolName());
+        assertEquals("Yaba", schoolService.findSchoolByName("semicolon").getSchoolLocation());
 
         AdmitStudentRequest admitStudentRequest = new AdmitStudentRequest();
         admitStudentRequest.setStudentFirstName("Ashaks");
@@ -55,8 +64,8 @@ public class SchoolServiceImplTest {
         admitStudentRequest.setEmailAddress("Ololade@gmail.com");
         admitStudentRequest.setSchoolName("Semicolon");
         schoolService.admitStudent(admitStudentRequest);
-        assertEquals(1L, schoolRepository.count());
-        assertEquals(1, schoolRepository.count());
+        assertEquals(1L, schoolService.size());
+
     }
 
     @Test
@@ -64,10 +73,8 @@ public class SchoolServiceImplTest {
         School newSchool = new School();
         newSchool.setSchoolName("semicolon");
         newSchool.setSchoolLocation("Yaba");
-        schoolRepository.save(newSchool);
-        assertNotNull(schoolRepository);
-        assertEquals(1L, schoolRepository.count());
-        assertEquals("Yaba", schoolRepository.findAll().get(0).getSchoolLocation());
+        schoolService.save(newSchool);
+
 
         AdmitStudentRequest admitStudentRequest = new AdmitStudentRequest();
         admitStudentRequest.setStudentFirstName("Ashaks");
@@ -77,15 +84,26 @@ public class SchoolServiceImplTest {
         admitStudentRequest.setStudentAge("15");
         admitStudentRequest.setSchoolName("Semicolon");
         schoolService.admitStudent(admitStudentRequest);
-        assertEquals(1L, schoolRepository.count());
+
+
+        var school = schoolService.findSchoolByName("semicolon");
 
         DeleteStudentRequest deleteStudentRequest = new DeleteStudentRequest();
         deleteStudentRequest.setFirstName("Ashaks");
         deleteStudentRequest.setSchoolName("Semicolon");
         deleteStudentRequest.setLastName("Ololade");
-        deleteStudentRequest.setStudentId(studentService.getAllStudents().get(0).getId());
+        deleteStudentRequest.setId(school.getId());
+        var stdId = studentService.getAllStudents().get(0).getId();
+        System.out.println("st id "+ stdId);
+        deleteStudentRequest.setStudentId(stdId);
+
         schoolService.deleteStudent(deleteStudentRequest);
-        assertEquals(1L, schoolRepository.count());
+
+        assertEquals(0, schoolService.size());
+
+
+
+
     }
 
     @Test
@@ -93,18 +111,17 @@ public class SchoolServiceImplTest {
         School newSchool = new School();
         newSchool.setSchoolName("semicolon");
         newSchool.setSchoolLocation("Yaba");
-        schoolRepository.save(newSchool);
-        assertNotNull(schoolRepository);
-        assertEquals(1L, schoolRepository.count());
-        assertEquals("Yaba", schoolRepository.findAll().get(0).getSchoolLocation());
+        schoolService.save(newSchool);
+
 
         CreateCourseRequest createCourseRequest = new CreateCourseRequest();
         createCourseRequest.setCourseName("Java");
         createCourseRequest.setCourseName("python");
         createCourseRequest.setCourseId("101");
         schoolService.createCourse(createCourseRequest);
-        assertEquals(1, schoolRepository.count());
-        assertEquals(1, courseRepository.count());
+        assertEquals(1, schoolService.size());
+
+
     }
 
     @Test
@@ -112,10 +129,9 @@ public class SchoolServiceImplTest {
         School newSchool = new School();
         newSchool.setSchoolName("semicolon");
         newSchool.setSchoolLocation("Yaba");
-        schoolRepository.save(newSchool);
-        assertNotNull(schoolRepository);
-        assertEquals(1L, schoolRepository.count());
-        assertEquals("semicolon", schoolRepository.findAll().get(0).getSchoolName());
+        schoolService.save(newSchool);
+
+
 
         CreateCourseRequest createCourseRequest = new CreateCourseRequest();
         createCourseRequest.setCourseName("Java");
@@ -123,20 +139,19 @@ public class SchoolServiceImplTest {
         createCourseRequest.setSchoolName("semicolon");
         createCourseRequest.setCourseId("101");
         schoolService.createCourse(createCourseRequest);
-        assertEquals(1, schoolRepository.count());
-        assertEquals(1, courseRepository.count());
-        var school = schoolRepository.findSchoolBySchoolName("semicolon");
-        var courseToBeDeleted = courseRepository.findById("101").get();
+
+
+
 
         DeleteCourseRequest deleteCourseRequest = new DeleteCourseRequest();
-
-        deleteCourseRequest.setSchoolName(school.getSchoolName());
-        deleteCourseRequest.setCourseName(courseToBeDeleted.getCourseName());
-        deleteCourseRequest.setCourseId(courseToBeDeleted.getCourseId());
-        deleteCourseRequest.setCourseStatus("Activated");
+        School school = new School();
+       var course = schoolService.getCourseByName("java");
+        deleteCourseRequest.setId(school.getId());
+        deleteCourseRequest.setCourseId(course.getCourseId());
         schoolService.deleteCourse(deleteCourseRequest);
-        assertEquals(0, courseRepository.count());
-        assertEquals(0, schoolRepository.count());
+
+        assertEquals(0, schoolService.getAllCourses().size());
+
 
     }
 
@@ -145,51 +160,40 @@ public class SchoolServiceImplTest {
         School newSchool = new School();
         newSchool.setSchoolName("semicolon");
         newSchool.setSchoolLocation("Yaba");
-        schoolRepository.save(newSchool);
-        assertNotNull(schoolRepository);
-        assertEquals(1L, schoolRepository.count());
-        assertEquals("Yaba", schoolRepository.findAll().get(0).getSchoolLocation());
+        schoolService.save(newSchool);
+
 
         CreateCourseRequest createCourseRequest = new CreateCourseRequest();
-        createCourseRequest.setCourseName("Java");
-        createCourseRequest.setCourseName("python");
+        createCourseRequest.setCourseStatus("true");
+
         createCourseRequest.setCourseName("javascript");
         createCourseRequest.setCourseId("101");
         schoolService.createCourse(createCourseRequest);
-        assertEquals(1, schoolRepository.count());
-        assertEquals(1, courseRepository.count());
 
         schoolService.getAllCourses();
         assertEquals("javascript", schoolService.getAllCourses().get(0).getCourseName());
-       // assertEquals("", schoolRepository.count());
-      //  assertEquals("", courseRepository.findAll().get(0).getCourseName());
 
     }
 
     @Test
     void schoolCanGetACourses() {
+
         School newSchool = new School();
         newSchool.setSchoolName("semicolon");
         newSchool.setSchoolLocation("Yaba");
-        schoolRepository.save(newSchool);
-        assertNotNull(schoolRepository);
-        assertEquals(1L, schoolRepository.count());
-        assertEquals("Yaba", schoolRepository.findAll().get(0).getSchoolLocation());
+        schoolService.save(newSchool);
 
         CreateCourseRequest createCourseRequest = new CreateCourseRequest();
-        createCourseRequest.setCourseName("Java");
-        createCourseRequest.setCourseName("python");
-        createCourseRequest.setCourseName("javascript");
+        createCourseRequest.setCourseName("java");
         createCourseRequest.setCourseId("101");
         schoolService.createCourse(createCourseRequest);
-        assertEquals(1, schoolRepository.count());
-        assertEquals(1, courseRepository.count());
 
-        Course course = new Course();
-        course.setCourseName("Java");
-        course.setCourseId("101");
-        schoolService.findACourse("java");
-        assertEquals("", schoolService.findACourse("java").getCourseName());
+        GetACourseRequest getACourseRequest = new GetACourseRequest();
+      getACourseRequest.setSchoolName("semicolon");
+      getACourseRequest.setCourseId("101");
+      getACourseRequest.setCourseName(createCourseRequest.getCourseName());
+      schoolService.getACourses(getACourseRequest);
+      assertEquals("java", schoolService.getAllCourses().get(0).getCourseName());
 
 
     }

@@ -1,14 +1,15 @@
 package Africa.semicolon.schoolProject.services;
 
-import Africa.semicolon.schoolProject.data.dto.model.Course;
-import Africa.semicolon.schoolProject.data.dto.model.School;
-import Africa.semicolon.schoolProject.data.dto.model.Student;
+import Africa.semicolon.schoolProject.data.model.Course;
+import Africa.semicolon.schoolProject.data.model.School;
+import Africa.semicolon.schoolProject.data.model.Student;
 import Africa.semicolon.schoolProject.dto.request.*;
 import Africa.semicolon.schoolProject.dto.response.AdmitStudentResponse;
 import Africa.semicolon.schoolProject.dto.response.AllStudentResponse;
 import Africa.semicolon.schoolProject.dto.response.CreateCourseResponse;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface SchoolService {
@@ -27,9 +28,21 @@ public interface SchoolService {
 
     CreateCourseResponse createCourse(CreateCourseRequest createCourseRequest);
 
-    void deleteCourse(DeleteCourseRequest deleteCourseRequest);
+    String deleteCourse(DeleteCourseRequest deleteCourseRequest);
 
     List<Course> getAllCourses();
 
-    Course findACourse( String courseName);
+
+
+    Course getCourseByName(String courseName);
+
+    Optional<Course> getACourses(GetACourseRequest getACourseRequest);
+
+    School findSchoolByName(String schoolName);
+
+    long size();
+
+    School save(School newSchool);
+
+    List<School>findAll();
 }
