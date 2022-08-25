@@ -1,19 +1,14 @@
 package Africa.semicolon.schoolProject.services;
 
-import Africa.semicolon.schoolProject.data.model.Course;
-import Africa.semicolon.schoolProject.data.model.School;
-import Africa.semicolon.schoolProject.data.model.Student;
-import Africa.semicolon.schoolProject.data.repository.CourseRepository;
-import Africa.semicolon.schoolProject.data.repository.SchoolRepository;
 
+import Africa.semicolon.schoolProject.data.model.School;
+import Africa.semicolon.schoolProject.dto.RegisterSchoolRequest;
 import Africa.semicolon.schoolProject.dto.request.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -23,41 +18,34 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class SchoolServiceImplTest {
     @Autowired
     private SchoolService schoolService;
-    @Autowired
-    private SchoolRepository schoolRepository;
-    @Autowired
-    private StudentService studentService;
-    @Autowired
-    private CourseRepository courseRepository;
-
-
-
 
 
     @AfterEach
-    void setUp() {
+    void tearDown() {
         schoolService.deleteAll();
+    }
+
+    @BeforeEach
+    void setUp(){
+        RegisterSchoolRequest registerSchoolRequest = new RegisterSchoolRequest();
+        registerSchoolRequest.setSchoolName("Semicolon");
+        registerSchoolRequest.setSchoolLocation("Sabo Yaba");
+        schoolService.registerSchool(registerSchoolRequest);
+
     }
 
 
 
+
     @Test
-    void schoolCanBeCreatedTest() {
-        School school = new School();
-        school.setSchoolName("semicolon");
-        assertNotNull(school.getSchoolName());
+    void schoolCanBeRegister(){
+        RegisterSchoolRequest registerSchoolRequest = new RegisterSchoolRequest();
+      assertEquals(1, schoolService.totalUsers());
+
     }
 
     @Test
     void schoolCanAdmitStudent() {
-        School newSchool = new School();
-        newSchool.setSchoolName("semicolon");
-        newSchool.setSchoolLocation("Yaba");
-        schoolService.save(newSchool);
-        assertEquals("semicolon", schoolService.findAll().get(0).getSchoolName());
-        assertEquals("semicolon",schoolService.findSchoolByName("semicolon").getSchoolName());
-        assertEquals("Yaba", schoolService.findSchoolByName("semicolon").getSchoolLocation());
-
         AdmitStudentRequest admitStudentRequest = new AdmitStudentRequest();
         admitStudentRequest.setStudentFirstName("Ashaks");
         admitStudentRequest.setStudentLastName("Ololade");
@@ -70,12 +58,6 @@ public class SchoolServiceImplTest {
 
     @Test
     void SchoolCanDeleteStudent() {
-        School newSchool = new School();
-        newSchool.setSchoolName("semicolon");
-        newSchool.setSchoolLocation("Yaba");
-        schoolService.save(newSchool);
-
-
         AdmitStudentRequest admitStudentRequest = new AdmitStudentRequest();
         admitStudentRequest.setStudentFirstName("Ashaks");
         admitStudentRequest.setStudentLastName("Ololade");
@@ -86,21 +68,19 @@ public class SchoolServiceImplTest {
         schoolService.admitStudent(admitStudentRequest);
 
 
-        var school = schoolService.findSchoolByName("semicolon");
-
         DeleteStudentRequest deleteStudentRequest = new DeleteStudentRequest();
+        var school = schoolService.findSchoolByName("semicolon");
+        var student = schoolService.getStudentById("1324");
         deleteStudentRequest.setFirstName("Ashaks");
         deleteStudentRequest.setSchoolName("Semicolon");
         deleteStudentRequest.setLastName("Ololade");
-        deleteStudentRequest.setId(school.getId());
-        var stdId = studentService.getAllStudents().get(0).getId();
-        System.out.println("st id "+ stdId);
-        deleteStudentRequest.setStudentId(stdId);
+        deleteStudentRequest.setId("12345");
+        deleteStudentRequest.setStudentId("1");
 
+        deleteStudentRequest.setStudentId(deleteStudentRequest.getStudentId());
         schoolService.deleteStudent(deleteStudentRequest);
 
         assertEquals(0, schoolService.size());
-
 
 
 
@@ -108,12 +88,6 @@ public class SchoolServiceImplTest {
 
     @Test
     void schoolCanCreateCourse() {
-        School newSchool = new School();
-        newSchool.setSchoolName("semicolon");
-        newSchool.setSchoolLocation("Yaba");
-        schoolService.save(newSchool);
-
-
         CreateCourseRequest createCourseRequest = new CreateCourseRequest();
         createCourseRequest.setCourseName("Java");
         createCourseRequest.setCourseName("python");
@@ -121,17 +95,10 @@ public class SchoolServiceImplTest {
         schoolService.createCourse(createCourseRequest);
         assertEquals(1, schoolService.size());
 
-
     }
 
     @Test
     void SchoolCanDeleteCourse() {
-        School newSchool = new School();
-        newSchool.setSchoolName("semicolon");
-        newSchool.setSchoolLocation("Yaba");
-        schoolService.save(newSchool);
-
-
 
         CreateCourseRequest createCourseRequest = new CreateCourseRequest();
         createCourseRequest.setCourseName("Java");
@@ -141,11 +108,9 @@ public class SchoolServiceImplTest {
         schoolService.createCourse(createCourseRequest);
 
 
-
-
         DeleteCourseRequest deleteCourseRequest = new DeleteCourseRequest();
         School school = new School();
-       var course = schoolService.getCourseByName("java");
+        var course = schoolService.getCourseByName("java");
         deleteCourseRequest.setId(school.getId());
         deleteCourseRequest.setCourseId(course.getCourseId());
         schoolService.deleteCourse(deleteCourseRequest);
@@ -157,15 +122,8 @@ public class SchoolServiceImplTest {
 
     @Test
     void schoolCanGetAllCourses() {
-        School newSchool = new School();
-        newSchool.setSchoolName("semicolon");
-        newSchool.setSchoolLocation("Yaba");
-        schoolService.save(newSchool);
-
-
         CreateCourseRequest createCourseRequest = new CreateCourseRequest();
         createCourseRequest.setCourseStatus("true");
-
         createCourseRequest.setCourseName("javascript");
         createCourseRequest.setCourseId("101");
         schoolService.createCourse(createCourseRequest);
@@ -178,10 +136,6 @@ public class SchoolServiceImplTest {
     @Test
     void schoolCanGetACourses() {
 
-        School newSchool = new School();
-        newSchool.setSchoolName("semicolon");
-        newSchool.setSchoolLocation("Yaba");
-        schoolService.save(newSchool);
 
         CreateCourseRequest createCourseRequest = new CreateCourseRequest();
         createCourseRequest.setCourseName("java");
@@ -189,11 +143,11 @@ public class SchoolServiceImplTest {
         schoolService.createCourse(createCourseRequest);
 
         GetACourseRequest getACourseRequest = new GetACourseRequest();
-      getACourseRequest.setSchoolName("semicolon");
-      getACourseRequest.setCourseId("101");
-      getACourseRequest.setCourseName(createCourseRequest.getCourseName());
-      schoolService.getACourses(getACourseRequest);
-      assertEquals("java", schoolService.getAllCourses().get(0).getCourseName());
+        getACourseRequest.setSchoolName("semicolon");
+        getACourseRequest.setCourseId("101");
+        getACourseRequest.setCourseName(createCourseRequest.getCourseName());
+        schoolService.getACourses(getACourseRequest);
+        assertEquals("java", schoolService.getAllCourses().get(0).getCourseName());
 
 
     }

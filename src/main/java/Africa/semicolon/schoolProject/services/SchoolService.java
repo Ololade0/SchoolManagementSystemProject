@@ -3,10 +3,12 @@ package Africa.semicolon.schoolProject.services;
 import Africa.semicolon.schoolProject.data.model.Course;
 import Africa.semicolon.schoolProject.data.model.School;
 import Africa.semicolon.schoolProject.data.model.Student;
+import Africa.semicolon.schoolProject.dto.RegisterSchoolRequest;
 import Africa.semicolon.schoolProject.dto.request.*;
 import Africa.semicolon.schoolProject.dto.response.AdmitStudentResponse;
 import Africa.semicolon.schoolProject.dto.response.AllStudentResponse;
 import Africa.semicolon.schoolProject.dto.response.CreateCourseResponse;
+import Africa.semicolon.schoolProject.dto.response.RegisterSchoolResponse;
 
 import java.util.List;
 import java.util.Optional;
@@ -45,4 +47,10 @@ public interface SchoolService {
     School save(School newSchool);
 
     List<School>findAll();
+
+    Student getStudentById(String id);
+
+    RegisterSchoolResponse registerSchool(RegisterSchoolRequest registerSchoolRequest);
+
+    long totalUsers();
 }

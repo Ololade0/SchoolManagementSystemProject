@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Document
+@Document("school")
 @NoArgsConstructor
 public class School {
     @Id
@@ -19,6 +19,7 @@ public class School {
     private String schoolLocation;
     @DBRef
     private List<Student> students = new ArrayList<>();
+    @DBRef
     private List<Course> courses = new ArrayList<>();
 
 

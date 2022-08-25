@@ -6,16 +6,14 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
-@NoArgsConstructor
-@Document
 public class AdmitStudentRequest {
+    private String studentId;
     private String studentFirstName;
     private String studentLastName;
     private String emailAddress;
     private String schoolName;
     private String studentAge;
     private String gender;
-    @Id
-    private String id;
+
 
 }

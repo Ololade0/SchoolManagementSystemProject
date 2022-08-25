@@ -5,10 +5,12 @@ import Africa.semicolon.schoolProject.data.model.School;
 import Africa.semicolon.schoolProject.data.model.Student;
 import Africa.semicolon.schoolProject.data.repository.CourseRepository;
 import Africa.semicolon.schoolProject.data.repository.SchoolRepository;
+import Africa.semicolon.schoolProject.dto.RegisterSchoolRequest;
 import Africa.semicolon.schoolProject.dto.request.*;
 import Africa.semicolon.schoolProject.dto.response.AdmitStudentResponse;
 import Africa.semicolon.schoolProject.dto.response.AllStudentResponse;
 import Africa.semicolon.schoolProject.dto.response.CreateCourseResponse;
+import Africa.semicolon.schoolProject.dto.response.RegisterSchoolResponse;
 import Africa.semicolon.schoolProject.exception.SchoolExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,8 +42,8 @@ public class SchoolServiceImpl implements SchoolService {
         newStudent.setEmail(admitStudentRequest.getEmailAddress());
         var schoolFound = schoolRepository.findSchoolBySchoolNameIgnoreCase(admitStudentRequest.getSchoolName());
         if (schoolFound != null) {
-            studentServices.saveNewStudent(newStudent);
             schoolFound.getStudents().add(newStudent);
+            studentServices.saveNewStudent(newStudent);
             schoolRepository.save(schoolFound);
         }
         if (schoolFound == null) {
@@ -175,6 +177,27 @@ public class SchoolServiceImpl implements SchoolService {
         return schoolRepository.findAll();
     }
 
+    @Override
+    public Student getStudentById(String id) {
+        return studentServices.findStudentById(id);
+    }
+
+    @Override
+    public RegisterSchoolResponse registerSchool(RegisterSchoolRequest registerSchoolRequest) {
+        School newSchool = new School();
+        newSchool.setSchoolName(registerSchoolRequest.getSchoolName());
+        newSchool.setSchoolLocation(registerSchoolRequest.getSchoolLocation());
+        schoolRepository.save(newSchool);
+        RegisterSchoolResponse registerSchoolResponse = new RegisterSchoolResponse();
+        registerSchoolResponse.setMessage("Registration Successful");
+        return registerSchoolResponse;
+
+    }
+
+    @Override
+    public long totalUsers() {
+        return schoolRepository.count();
+    }
 
 }
 
