@@ -5,7 +5,7 @@ import Africa.semicolon.schoolProject.data.model.School;
 import Africa.semicolon.schoolProject.data.model.Student;
 import Africa.semicolon.schoolProject.data.repository.CourseRepository;
 import Africa.semicolon.schoolProject.data.repository.SchoolRepository;
-import Africa.semicolon.schoolProject.dto.RegisterSchoolRequest;
+import Africa.semicolon.schoolProject.dto.request.RegisterSchoolRequest;
 import Africa.semicolon.schoolProject.dto.request.*;
 import Africa.semicolon.schoolProject.dto.response.AdmitStudentResponse;
 import Africa.semicolon.schoolProject.dto.response.AllStudentResponse;
@@ -149,7 +149,7 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Override
-    public Optional<Course> getACourses(GetACourseRequest getACourseRequest) {
+    public Optional<Course> getACourse(GetACourseRequest getACourseRequest) {
         return courseRepository.findById(getACourseRequest.getCourseId());
     }
 

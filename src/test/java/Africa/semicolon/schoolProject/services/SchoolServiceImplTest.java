@@ -2,7 +2,7 @@ package Africa.semicolon.schoolProject.services;
 
 
 import Africa.semicolon.schoolProject.data.model.School;
-import Africa.semicolon.schoolProject.dto.RegisterSchoolRequest;
+import Africa.semicolon.schoolProject.dto.request.RegisterSchoolRequest;
 import Africa.semicolon.schoolProject.dto.request.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 
 
 @SpringBootTest
@@ -135,8 +135,6 @@ public class SchoolServiceImplTest {
 
     @Test
     void schoolCanGetACourses() {
-
-
         CreateCourseRequest createCourseRequest = new CreateCourseRequest();
         createCourseRequest.setCourseName("java");
         createCourseRequest.setCourseId("101");
@@ -146,7 +144,7 @@ public class SchoolServiceImplTest {
         getACourseRequest.setSchoolName("semicolon");
         getACourseRequest.setCourseId("101");
         getACourseRequest.setCourseName(createCourseRequest.getCourseName());
-        schoolService.getACourses(getACourseRequest);
+        schoolService.getACourse(getACourseRequest);
         assertEquals("java", schoolService.getAllCourses().get(0).getCourseName());
 
 

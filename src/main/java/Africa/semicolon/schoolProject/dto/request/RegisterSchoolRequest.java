@@ -1,4 +1,4 @@
-package Africa.semicolon.schoolProject.dto;
+package Africa.semicolon.schoolProject.dto.request;
 
 import lombok.Data;
 

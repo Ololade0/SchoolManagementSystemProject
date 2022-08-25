@@ -49,14 +49,6 @@ public class StudentServiceImpl implements StudentService{
      return studentRepository.save(student);
 
     }
-//    @Override
-//    public Student admitStudent(AdmitStudentRequest admitStudentRequest) {
-//      Student student = new Student();
-//      student.setStudentFirstName(admitStudentRequest.getStudentFirstName());
-//      student.setStudentAge(admitStudentRequest.getStudentAge());
-//      studentRepository.save(student);
-//      return student;
-
 
 
     @Override

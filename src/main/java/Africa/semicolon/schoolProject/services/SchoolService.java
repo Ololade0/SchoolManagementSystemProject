@@ -3,7 +3,7 @@ package Africa.semicolon.schoolProject.services;
 import Africa.semicolon.schoolProject.data.model.Course;
 import Africa.semicolon.schoolProject.data.model.School;
 import Africa.semicolon.schoolProject.data.model.Student;
-import Africa.semicolon.schoolProject.dto.RegisterSchoolRequest;
+import Africa.semicolon.schoolProject.dto.request.RegisterSchoolRequest;
 import Africa.semicolon.schoolProject.dto.request.*;
 import Africa.semicolon.schoolProject.dto.response.AdmitStudentResponse;
 import Africa.semicolon.schoolProject.dto.response.AllStudentResponse;
@@ -38,7 +38,7 @@ public interface SchoolService {
 
     Course getCourseByName(String courseName);
 
-    Optional<Course> getACourses(GetACourseRequest getACourseRequest);
+    Optional<Course> getACourse(GetACourseRequest getACourseRequest);
 
     School findSchoolByName(String schoolName);
 
