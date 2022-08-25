@@ -1,9 +1,7 @@
 package Africa.semicolon.schoolProject.services;
 
-import Africa.semicolon.schoolProject.data.model.Student;
 import Africa.semicolon.schoolProject.data.repository.StudentRepository;
 import Africa.semicolon.schoolProject.dto.request.AdmitStudentRequest;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

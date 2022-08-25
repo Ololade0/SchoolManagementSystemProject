@@ -1,20 +1,16 @@
-package Africa.semicolon.schoolProject.data.model;
+package Africa.semicolon.schoolProject.dto.response;
 
+import Africa.semicolon.schoolProject.data.model.Course;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Document("Students")
 @NoArgsConstructor
-public class Student {
-    @Id
-    private String id;
+public class FindStudentResponse {
     private String firstName;
     private String lastName;
     private int studentNumber;

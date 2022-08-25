@@ -7,9 +7,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @NoArgsConstructor
 @Document
-public class GetACourseRequest {
+public class FindCourseRequest {
     private String courseName;
-    private String courseId;
+    private String courseCode;
     private String schoolName;
 
 }

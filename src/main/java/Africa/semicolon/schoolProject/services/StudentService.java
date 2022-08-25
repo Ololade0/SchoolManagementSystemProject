@@ -2,22 +2,16 @@ package Africa.semicolon.schoolProject.services;
 
 import Africa.semicolon.schoolProject.data.model.Student;
 import Africa.semicolon.schoolProject.dto.request.AdmitStudentRequest;
+import Africa.semicolon.schoolProject.dto.request.DeleteStudentRequest;
 
 import java.util.List;
 
 public interface StudentService {
-    void deleteStudent(Student student);
+    Student deleteStudent(DeleteStudentRequest student);
 
-    Student findStudentById(String studentId);
-
-    Student saveNewStudent(Student student);
+    Student saveNewStudent(AdmitStudentRequest admitStudentRequest);
 
     List<Student> getAllStudents();
 
-    Student admitStudent(AdmitStudentRequest admitStudentRequest);
-
     long size();
-
-
-    Student admitNewStudent(AdmitStudentRequest admitStudentRequest2);
 }

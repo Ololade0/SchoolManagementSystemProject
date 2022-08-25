@@ -7,12 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 public class CreateCourseRequest {
-    @Id
-    private String courseId;
-    public String schoolName;
+    private String courseCode;
+    private String schoolName;
     private String courseName;
-    private String courseStatus;
-
-
-
 }

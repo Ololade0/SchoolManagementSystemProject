@@ -7,13 +7,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 public class AdmitStudentRequest {
-    private String studentId;
-    private String studentFirstName;
-    private String studentLastName;
+    private String firstName;
+    private String lastName;
     private String emailAddress;
     private String schoolName;
-    private String studentAge;
+    private String age;
     private String gender;
-
-
+    private int studentNumber;
 }

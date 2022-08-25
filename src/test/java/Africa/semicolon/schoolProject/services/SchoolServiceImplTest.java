@@ -2,7 +2,7 @@ package Africa.semicolon.schoolProject.services;
 
 
 import Africa.semicolon.schoolProject.data.model.School;
-import Africa.semicolon.schoolProject.dto.RegisterSchoolRequest;
+import Africa.semicolon.schoolProject.dto.request.RegisterSchoolRequest;
 import Africa.semicolon.schoolProject.dto.request.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -70,7 +70,6 @@ public class SchoolServiceImplTest {
 
         DeleteStudentRequest deleteStudentRequest = new DeleteStudentRequest();
         var school = schoolService.findSchoolByName("semicolon");
-        var student = schoolService.getStudentById("1324");
         deleteStudentRequest.setFirstName("Ashaks");
         deleteStudentRequest.setSchoolName("Semicolon");
         deleteStudentRequest.setLastName("Ololade");
@@ -90,8 +89,7 @@ public class SchoolServiceImplTest {
     void schoolCanCreateCourse() {
         CreateCourseRequest createCourseRequest = new CreateCourseRequest();
         createCourseRequest.setCourseName("Java");
-        createCourseRequest.setCourseName("python");
-        createCourseRequest.setCourseId("101");
+        createCourseRequest.setCourseCode("101");
         schoolService.createCourse(createCourseRequest);
         assertEquals(1, schoolService.size());
 
@@ -142,7 +140,7 @@ public class SchoolServiceImplTest {
         createCourseRequest.setCourseId("101");
         schoolService.createCourse(createCourseRequest);
 
-        GetACourseRequest getACourseRequest = new GetACourseRequest();
+        FindCourseRequest getACourseRequest = new FindCourseRequest();
         getACourseRequest.setSchoolName("semicolon");
         getACourseRequest.setCourseId("101");
         getACourseRequest.setCourseName(createCourseRequest.getCourseName());
