@@ -7,10 +7,7 @@ import Africa.semicolon.schoolProject.data.repository.CourseRepository;
 import Africa.semicolon.schoolProject.data.repository.SchoolRepository;
 import Africa.semicolon.schoolProject.dto.request.RegisterSchoolRequest;
 import Africa.semicolon.schoolProject.dto.request.*;
-import Africa.semicolon.schoolProject.dto.response.AdmitStudentResponse;
-import Africa.semicolon.schoolProject.dto.response.AllStudentResponse;
-import Africa.semicolon.schoolProject.dto.response.CreateCourseResponse;
-import Africa.semicolon.schoolProject.dto.response.RegisterSchoolResponse;
+import Africa.semicolon.schoolProject.dto.response.*;
 import Africa.semicolon.schoolProject.exception.SchoolExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,7 +62,7 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Override
-    public void deleteStudent(DeleteStudentRequest deleteStudentRequest) {
+    public String deleteStudent(DeleteStudentRequest deleteStudentRequest) {
         var schoolFound = schoolRepository.findSchoolById(deleteStudentRequest.getId());
         if (schoolFound != null) {
             for (var studentToDel : schoolFound.getStudents()) {
@@ -73,10 +70,11 @@ public class SchoolServiceImpl implements SchoolService {
                     studentServices.deleteStudent(studentToDel);
                     schoolFound.getStudents().remove(studentToDel);
                     schoolRepository.save(schoolFound);
-                    return;
+                    return "student sucessfully deleted";
                 }
             }
         }
+        return " error";
     }
 
     @Override
@@ -143,10 +141,6 @@ public class SchoolServiceImpl implements SchoolService {
         return schoolRepository.findAll().get(0).getCourses();
     }
 
-    @Override
-    public Course getCourseByName(String courseName) {
-        return courseRepository.findByCourseName(courseName);
-    }
 
     @Override
     public Optional<Course> getACourse(GetACourseRequest getACourseRequest) {
@@ -169,11 +163,13 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public School save(School newSchool) {
+
         return schoolRepository.save(newSchool);
     }
 
     @Override
     public List<School> findAll() {
+
         return schoolRepository.findAll();
     }
 
@@ -196,20 +192,48 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public long totalUsers() {
+
         return schoolRepository.count();
     }
 
+    @Override
+    public UpdateCourseResponse updateCourse(UpdateCourseRequest updateCourseRequest) {
+        School school = schoolRepository.findSchoolBySchoolNameIgnoreCase(updateCourseRequest.getSchoolName());
+    Course course = courseRepository.findByCourseName(updateCourseRequest.getCourseName());
+     school.getCourses().remove(course);
+   if(updateCourseRequest.getCourseName()!= null){
+       course.setCourseName(updateCourseRequest.getCourseName());
+    }
+   if(updateCourseRequest.getCourseCode()!= null){
+       course.setCourseCode(updateCourseRequest.getCourseCode());
+        }
+   if(updateCourseRequest.getCourseId()!= null){
+            course.setCourseId(updateCourseRequest.getCourseId());
+        }
+
+   courseServices.saveNewCourse(course);
+   school.getCourses().add(course);
+   schoolRepository.save(school);
+   UpdateCourseResponse updateCourseResponse = new UpdateCourseResponse();
+   updateCourseResponse.setMessage("course succesfully updated");
+   return updateCourseResponse;
+
+
+
+
+
+    }
+
+    @Override
+    public Student getStudentByEmail(String email) {
+
+        return studentServices.getStudentByEmail(email);
+    }
+
+    @Override
+    public Course getCourseByName(String courseName) {
+
+        return courseServices.getCourseByName(courseName);
+    }
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

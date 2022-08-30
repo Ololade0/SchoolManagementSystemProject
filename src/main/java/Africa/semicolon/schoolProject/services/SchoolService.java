@@ -5,10 +5,7 @@ import Africa.semicolon.schoolProject.data.model.School;
 import Africa.semicolon.schoolProject.data.model.Student;
 import Africa.semicolon.schoolProject.dto.request.RegisterSchoolRequest;
 import Africa.semicolon.schoolProject.dto.request.*;
-import Africa.semicolon.schoolProject.dto.response.AdmitStudentResponse;
-import Africa.semicolon.schoolProject.dto.response.AllStudentResponse;
-import Africa.semicolon.schoolProject.dto.response.CreateCourseResponse;
-import Africa.semicolon.schoolProject.dto.response.RegisterSchoolResponse;
+import Africa.semicolon.schoolProject.dto.response.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +16,7 @@ public interface SchoolService {
     AdmitStudentResponse admitStudent(AdmitStudentRequest admitStudentRequest);
 
 
-    void deleteStudent(DeleteStudentRequest deleteStudentRequest);  // changed your deleteRequest class  type to String type below
+    String deleteStudent(DeleteStudentRequest deleteStudentRequest);
 
     List<Student> getAllStudents();
 
@@ -36,7 +33,7 @@ public interface SchoolService {
 
 
 
-    Course getCourseByName(String courseName);
+//    Course findCourseByName(String courseName);
 
     Optional<Course> getACourse(GetACourseRequest getACourseRequest);
 
@@ -53,4 +50,10 @@ public interface SchoolService {
     RegisterSchoolResponse registerSchool(RegisterSchoolRequest registerSchoolRequest);
 
     long totalUsers();
+
+    UpdateCourseResponse updateCourse(UpdateCourseRequest updateCourseRequest);
+
+    Student getStudentByEmail(String email);
+
+    Course getCourseByName(String courseName);
 }

@@ -12,7 +12,9 @@ public class Course {
     @Id
     private String courseId;
     private String courseName;
+    private String courseCode;
     private String courseStatus;
+    private String id;
 
 
 }

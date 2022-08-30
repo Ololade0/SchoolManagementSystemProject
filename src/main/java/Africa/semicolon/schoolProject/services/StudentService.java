@@ -14,10 +14,12 @@ public interface StudentService {
 
     List<Student> getAllStudents();
 
-    Student admitStudent(AdmitStudentRequest admitStudentRequest);
+  //  Student admitStudent(AdmitStudentRequest admitStudentRequest);
 
     long size();
 
 
-    Student admitNewStudent(AdmitStudentRequest admitStudentRequest2);
+ //   Student admitNewStudent(AdmitStudentRequest admitStudentRequest2);
+
+    Student getStudentByEmail(String email);
 }

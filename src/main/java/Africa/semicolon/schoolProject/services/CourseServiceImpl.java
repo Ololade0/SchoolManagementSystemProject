@@ -21,4 +21,9 @@ public class CourseServiceImpl implements CourseServices{
     public void delete(Course courseToDel) {
         courseRepository.delete(courseToDel);
     }
+
+    @Override
+    public Course getCourseByName(String courseName) {
+        return  courseRepository.findByCourseName(courseName);
+    }
 }
