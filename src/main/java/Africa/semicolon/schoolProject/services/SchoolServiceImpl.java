@@ -39,7 +39,7 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public AdmitStudentResponse admitStudent(AdmitStudentRequest admitStudentRequest) {
-        admitStudentRequest.setStudentNumber(size());
+        admitStudentRequest.setStudentNumber((int)studentService.size());
         Student newStudent = studentService.saveNewStudent(admitStudentRequest);
 
         School schoolFound = findSchool(admitStudentRequest.getSchoolName());
@@ -124,27 +124,17 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Override
-    public String deleteCourse(DeleteCourseRequest deleteCourseRequest) {
-        var foundSchool = schoolRepository.findSchoolById(deleteCourseRequest.getId());
-        if (foundSchool != null) {
-            for (var courseToDel : foundSchool.getCourses()) {
-                if (Objects.equals(courseToDel.getCourseId(), deleteCourseRequest.getCourseId())) {
-                    courseService.delete(courseToDel);
-                    foundSchool.getCourses().remove(courseToDel);
-                    schoolRepository.save(foundSchool);
-                    return "deleted successfully";
-                }
+    public DeleteCourseResponse deleteCourse(DeleteCourseRequest deleteCourseRequest) {
+        Course courseToDel = courseService.deleteCourse(deleteCourseRequest);
+        var schoolFound = findSchool(deleteCourseRequest.getSchoolName());
+        schoolFound.getCourses().remove(courseToDel);
+        schoolRepository.save(schoolFound);
 
-            }
-        }
-        return "error";
+        DeleteCourseResponse response = new DeleteCourseResponse();
+        response.setMessage("Course created successfully");
+
+        return response;
     }
-
-    @Override
-    public long size() {
-        return schoolRepository.count();
-    }
-
 }
 
 

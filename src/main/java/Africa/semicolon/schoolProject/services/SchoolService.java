@@ -23,13 +23,11 @@ public interface SchoolService {
     FindStudentResponse findStudentRegisteredIn(FindStudentRequest findStudentRequest);
 
 
-    String deleteCourse(DeleteCourseRequest deleteCourseRequest);
+    DeleteCourseResponse deleteCourse(DeleteCourseRequest deleteCourseRequest);
 
     List<Course> getAllCoursesOfferedIn(String schoolName);
 
     FindCourseResponse findCourseOfferedIn(FindCourseRequest findCourseRequest);
-
-    long size();
 
     RegisterSchoolResponse registerSchool(RegisterSchoolRequest registerSchoolRequest);
 }
