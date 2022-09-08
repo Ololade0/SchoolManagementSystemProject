@@ -52,6 +52,7 @@ public class SchoolServiceImplTest {
         admitStudentRequest.setEmailAddress("Ololade@gmail.com");
         admitStudentRequest.setStudentAge("32");
         admitStudentRequest.setGender("Female");
+        admitStudentRequest.setStudentId("1011");
         admitStudentRequest.setSchoolName("Semicolon");
         schoolService.admitStudent(admitStudentRequest);
         assertEquals(1L, schoolService.size());
@@ -73,17 +74,31 @@ public class SchoolServiceImplTest {
 
         DeleteStudentRequest deleteStudentRequest = new DeleteStudentRequest();
         var school = schoolService.findSchoolByName("Semicolon");
-        var student = schoolService.getStudentByEmail("Ololade@gmail.com");
+        var student = schoolService.findStudentByEmail("Ololade@gmail.com");
 
         deleteStudentRequest.setId(school.getId());
-
-
         deleteStudentRequest.setStudentId(student.getId());
         schoolService.deleteStudent(deleteStudentRequest);
 
         assertEquals(0, schoolService.getAllStudents().size());
 
+    }
 
+
+    @Test
+    void schoolCanGetAStudent() {
+        AdmitStudentRequest admitStudentRequest = new AdmitStudentRequest();
+        admitStudentRequest.setStudentFirstName("Ashaks");
+        admitStudentRequest.setStudentLastName("Ololade");
+        admitStudentRequest.setEmailAddress("Ololade@gmail.com");
+        admitStudentRequest.setStudentAge("32");
+        admitStudentRequest.setGender("Female");
+        admitStudentRequest.setStudentId("1011");
+        admitStudentRequest.setSchoolName("Semicolon");
+        schoolService.admitStudent(admitStudentRequest);
+
+        schoolService.getAStudent("1011");
+        assertEquals("Ololade", schoolService.getAllStudents().get(0).getStudentLastName());
 
     }
 
@@ -140,12 +155,7 @@ public class SchoolServiceImplTest {
         createCourseRequest.setCourseName("java");
         createCourseRequest.setCourseId("101");
         schoolService.createCourse(createCourseRequest);
-
-        GetACourseRequest getACourseRequest = new GetACourseRequest();
-        getACourseRequest.setSchoolName("semicolon");
-        getACourseRequest.setCourseId("101");
-        getACourseRequest.setCourseName(createCourseRequest.getCourseName());
-        schoolService.getACourse(getACourseRequest);
+        schoolService.getACourse("101");
         assertEquals("java", schoolService.getAllCourses().get(0).getCourseName());
 
     }
@@ -160,6 +170,7 @@ public class SchoolServiceImplTest {
 
         UpdateCourseRequest updateCourseRequest = new UpdateCourseRequest();
         var school = schoolService.findSchoolByName("Semicolon");
+        var course1 = schoolService.findCourseById(school.getId());
         var course = schoolService.getCourseByName("java");
         updateCourseRequest.setCourseName("python");
         schoolService.updateCourse(updateCourseRequest);

@@ -33,9 +33,6 @@ public interface SchoolService {
 
 
 
-//    Course findCourseByName(String courseName);
-
-    Optional<Course> getACourse(GetACourseRequest getACourseRequest);
 
     School findSchoolByName(String schoolName);
 
@@ -53,7 +50,19 @@ public interface SchoolService {
 
     UpdateCourseResponse updateCourse(UpdateCourseRequest updateCourseRequest);
 
-    Student getStudentByEmail(String email);
 
     Course getCourseByName(String courseName);
+
+
+    Student getAStudent(String id);
+
+
+
+    Course getACourse(String id);
+
+    Student findStudentByEmail(String email);
+
+    Course findCourseById(String id);
+
+    School findSchoolBySchoolName(String scholName);
 }

@@ -8,14 +8,13 @@ import Africa.semicolon.schoolProject.data.repository.SchoolRepository;
 import Africa.semicolon.schoolProject.dto.request.RegisterSchoolRequest;
 import Africa.semicolon.schoolProject.dto.request.*;
 import Africa.semicolon.schoolProject.dto.response.*;
-import Africa.semicolon.schoolProject.exception.SchoolExistException;
+import Africa.semicolon.schoolProject.exception.SchoolExistDoesException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class SchoolServiceImpl implements SchoolService {
@@ -44,12 +43,12 @@ public class SchoolServiceImpl implements SchoolService {
             schoolRepository.save(schoolFound);
         }
         if (schoolFound == null) {
-            throw new SchoolExistException(admitStudentRequest.getSchoolName() + "does not exist");
+            throw new SchoolExistDoesException(admitStudentRequest.getSchoolName() + "does not exist");
 
         }
 
         AdmitStudentResponse admitStudentResponse = new AdmitStudentResponse();
-        admitStudentResponse.setMessage("Student successfully admitted");
+        admitStudentResponse.setMessage(" Student successfully admitted");
         return admitStudentResponse;
 
 
@@ -112,10 +111,10 @@ public class SchoolServiceImpl implements SchoolService {
             schoolRepository.save(schoolFound);
         }
         if (schoolFound == null) {
-            throw new SchoolExistException(createCourseRequest.getSchoolName() + "does not exist");
+            throw new SchoolExistDoesException(createCourseRequest.getSchoolName() + "does not exist");
         }
         CreateCourseResponse createCourseResponse = new CreateCourseResponse();
-        createCourseResponse.setMessage("Course created successfully");
+        createCourseResponse.setMessage(course.getCourseName() + "Course created successfully");
         return createCourseResponse;
     }
 
@@ -143,15 +142,10 @@ public class SchoolServiceImpl implements SchoolService {
 
 
     @Override
-    public Optional<Course> getACourse(GetACourseRequest getACourseRequest) {
-        return courseRepository.findById(getACourseRequest.getCourseId());
-    }
-
-    @Override
     public School findSchoolByName(String schoolName) {
         School foundSchool = schoolRepository.findSchoolBySchoolNameIgnoreCase(schoolName);
         if (foundSchool == null) {
-            throw new SchoolExistException("School not found!");
+            throw new SchoolExistDoesException("School not found!");
         }
         return foundSchool;
     }
@@ -185,7 +179,7 @@ public class SchoolServiceImpl implements SchoolService {
         newSchool.setSchoolLocation(registerSchoolRequest.getSchoolLocation());
         schoolRepository.save(newSchool);
         RegisterSchoolResponse registerSchoolResponse = new RegisterSchoolResponse();
-        registerSchoolResponse.setMessage("Registration Successful");
+        registerSchoolResponse.setMessage(newSchool.getSchoolName() + " Registration successful");
         return registerSchoolResponse;
 
     }
@@ -197,43 +191,71 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Override
+
     public UpdateCourseResponse updateCourse(UpdateCourseRequest updateCourseRequest) {
-        School school = schoolRepository.findSchoolBySchoolNameIgnoreCase(updateCourseRequest.getSchoolName());
-    Course course = courseRepository.findByCourseName(updateCourseRequest.getCourseName());
-     school.getCourses().remove(course);
-   if(updateCourseRequest.getCourseName()!= null){
-       course.setCourseName(updateCourseRequest.getCourseName());
-    }
-   if(updateCourseRequest.getCourseCode()!= null){
-       course.setCourseCode(updateCourseRequest.getCourseCode());
+        School school = schoolRepository.findSchoolBySchoolName(updateCourseRequest.getSchoolName());
+        if (school == null) {
+            throw new  SchoolExistDoesException("School cannot be found");
         }
-   if(updateCourseRequest.getCourseId()!= null){
-            course.setCourseId(updateCourseRequest.getCourseId());
+        else {
+        Course course1 = courseRepository.findCourseById(updateCourseRequest.getCourseId());
+            school.getCourses().set(0, course1);
+            // school.getCourses().remove(course1);
+            if (updateCourseRequest.getCourseName() != null) {
+                course1.setCourseName(updateCourseRequest.getCourseName());
+            }
+            if (updateCourseRequest.getCourseCode() != null) {
+                course1.setCourseCode(updateCourseRequest.getCourseCode());
+            }
+            if (updateCourseRequest.getCourseId() != null) {
+                course1.setCourseId(updateCourseRequest.getCourseId());
+            }
+
+
+            courseServices.reSaveNewCourse(course1);
+            school.getCourses().add(course1);
+            schoolRepository.save(school);
+            UpdateCourseResponse updateCourseResponse = new UpdateCourseResponse();
+            updateCourseResponse.setMessage("course succesfully updated");
+            return updateCourseResponse;
+
         }
 
-   courseServices.saveNewCourse(course);
-   school.getCourses().add(course);
-   schoolRepository.save(school);
-   UpdateCourseResponse updateCourseResponse = new UpdateCourseResponse();
-   updateCourseResponse.setMessage("course succesfully updated");
-   return updateCourseResponse;
-
-
-
 
 
     }
 
-    @Override
-    public Student getStudentByEmail(String email) {
-
-        return studentServices.getStudentByEmail(email);
-    }
 
     @Override
     public Course getCourseByName(String courseName) {
 
         return courseServices.getCourseByName(courseName);
     }
+
+    @Override
+    public Student getAStudent(String id) {
+        return studentServices.findStudentById(id);
+    }
+
+    @Override
+    public Course getACourse(String id) {
+        return courseServices.findCourseById(id);
+    }
+
+    @Override
+    public Student findStudentByEmail(String email) {
+        return studentServices.findStudentByEmail(email);
+    }
+
+    @Override
+    public Course findCourseById(String id) {
+        return courseServices.findCourseById(id);
+    }
+
+    @Override
+    public School findSchoolBySchoolName(String schoolName) {
+        return schoolRepository.findSchoolBySchoolName(schoolName);
+    }
+
 
 }

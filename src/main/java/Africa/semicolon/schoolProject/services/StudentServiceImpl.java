@@ -45,21 +45,14 @@ public class StudentServiceImpl implements StudentService{
         return studentRepository.count();
     }
 
-//    @Override
-//    public Student admitStudent(AdmitStudentRequest admitStudentRequest2) {
-//        Student foundStudent = studentRepository.findStudentById(admitStudentRequest2.getStudentId());
-//        if(foundStudent != null){
-//            throw new StudentExistException("This student already exist");
-//        }
-//        Student student =  new Student();
-//        student.setStudentAge(admitStudentRequest2.getStudentAge());
-//        student.setStudentFirstName(admitStudentRequest2.getStudentFirstName());
-//        student.setStudentLastName(admitStudentRequest2.getStudentLastName());
-//        return studentRepository.save(student);
-//    }
 
     @Override
     public Student getStudentByEmail(String email) {
+        return studentRepository.findStudentByEmail(email);
+    }
+
+    @Override
+    public Student findStudentByEmail(String email) {
         return studentRepository.findStudentByEmail(email);
     }
 }

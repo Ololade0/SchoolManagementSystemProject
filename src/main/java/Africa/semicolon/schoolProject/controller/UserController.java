@@ -2,6 +2,7 @@ package Africa.semicolon.schoolProject.controller;
 
 
 import Africa.semicolon.schoolProject.data.model.Course;
+import Africa.semicolon.schoolProject.data.model.Student;
 import Africa.semicolon.schoolProject.dto.request.*;
 
 import Africa.semicolon.schoolProject.dto.response.AdmitStudentResponse;
@@ -16,8 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 
 @RestController
 public class UserController {
@@ -29,7 +28,7 @@ public class UserController {
         try {
             RegisterSchoolResponse registerSchoolResponse = schoolService.registerSchool(registerSchoolRequest);
             return new ResponseEntity<>(registerSchoolResponse, HttpStatus.ACCEPTED);
-        } catch (SchoolExistException e) {
+        } catch (SchoolExistDoesException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
@@ -63,17 +62,6 @@ public class UserController {
         return new ResponseEntity<>(schoolService.getAllStudents(), HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/a-course")
-    public ResponseEntity<?> GetACourse(@RequestBody GetACourseRequest getACourseRequest) {
-        try {
-            Optional<Course> getACourseResponse = schoolService.getACourse(getACourseRequest);
-            return new ResponseEntity<>(getACourseResponse, HttpStatus.ACCEPTED);
-        } catch (CourseCanNotBeFound e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-
-        }
-
-    }
 
     @DeleteMapping("/delete-course")
     public ResponseEntity<?> deleteCourse(@RequestBody DeleteCourseRequest deleteCourseRequest) {
@@ -101,6 +89,31 @@ public class UserController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
+
+
+    }
+
+   // @GetMapping(path = "/{id}")
+    public ResponseEntity<?> GetAStudent(@PathVariable String id ) {
+        try {
+           Student student  = schoolService.getAStudent(id);
+            return new ResponseEntity<>(student, HttpStatus.ACCEPTED);
+        } catch (StudentDoesNotExistException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+
+        }
+
+    }
+
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<?> GetACourse(@PathVariable String id ) {
+        try {
+            Course course = schoolService.getACourse(id);
+            return new ResponseEntity<>(course, HttpStatus.ACCEPTED);
+        } catch (CourseCanNotBeFound e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+
+        }
 
     }
 

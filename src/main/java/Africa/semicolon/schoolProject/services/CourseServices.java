@@ -11,4 +11,8 @@ public interface CourseServices {
     void delete(Course courseToDel);
 
     Course getCourseByName(String courseName);
+
+    Course findCourseById(String id);
+
+    Course reSaveNewCourse(Course course1);
 }
