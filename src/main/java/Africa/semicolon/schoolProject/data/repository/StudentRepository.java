@@ -8,7 +8,8 @@ import org.springframework.stereotype.Repository;
 public interface StudentRepository extends MongoRepository<Student, String> {
 
     Student findStudentById(String studentId);
-    Student findStudentByEmail(String email);
+     Student findStudentByEmail(String email);
+
 
 }
 

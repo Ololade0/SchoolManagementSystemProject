@@ -5,4 +5,6 @@ import lombok.Data;
 @Data
 public class CreateCourseResponse {
     private String message;
+    private String courseId;
+
 }

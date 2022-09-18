@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Course {
     @Id
     private String id;
-    private String courseId;
+
     private String courseName;
     private String courseCode;
     private String courseStatus;

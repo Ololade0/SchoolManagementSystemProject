@@ -23,4 +23,8 @@ public interface StudentService {
     Student getStudentByEmail(String email);
 
     Student findStudentByEmail(String email);
+
+    void delete(Student studToDel);
+
+    void deleteAll();
 }

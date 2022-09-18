@@ -13,7 +13,6 @@ import java.util.Optional;
 public interface SchoolRepository extends MongoRepository<School, String> {
 
     School findSchoolBySchoolNameIgnoreCase(String name);
-  //  School findSchoolBySchoolName(String name);
     School findSchoolBySchoolName(String name);
 
 

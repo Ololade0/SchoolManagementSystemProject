@@ -15,6 +15,7 @@ import java.util.List;
 public class School {
     @Id
     private String id;
+
     private String schoolName;
     private String schoolLocation;
     @DBRef

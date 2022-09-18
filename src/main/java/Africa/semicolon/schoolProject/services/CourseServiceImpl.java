@@ -29,12 +29,17 @@ public class CourseServiceImpl implements CourseServices{
 
     @Override
     public Course findCourseById(String id) {
-        return courseRepository.findCourseById(id);
+        return courseRepository.findById(id).get();
     }
 
     @Override
     public Course reSaveNewCourse(Course course1) {
         return courseRepository.save(course1);
+    }
+
+    @Override
+    public void deleteAll() {
+        courseRepository.deleteAll();
     }
 
 }

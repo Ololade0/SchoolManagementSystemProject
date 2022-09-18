@@ -15,4 +15,6 @@ public interface CourseServices {
     Course findCourseById(String id);
 
     Course reSaveNewCourse(Course course1);
+
+    void deleteAll();
 }

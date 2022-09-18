@@ -65,4 +65,6 @@ public interface SchoolService {
     Course findCourseById(String id);
 
     School findSchoolBySchoolName(String scholName);
+
+    School findSchoolById(String schoolId);
 }

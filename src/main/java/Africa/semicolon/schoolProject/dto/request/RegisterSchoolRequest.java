@@ -8,4 +8,6 @@ public class RegisterSchoolRequest {
     private String schoolName;
     private String schoolLocation;
     private String schoolAddress;
+
+
 }

@@ -24,8 +24,7 @@ public class SchoolServiceImpl implements SchoolService {
     private StudentService studentServices;
     @Autowired
     private CourseServices courseServices;
-    @Autowired
-    private CourseRepository courseRepository;
+
 
 
     @Override
@@ -55,30 +54,39 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Override
+    public String deleteStudent(DeleteStudentRequest deleteStudentRequest) {
+        School foundSchool = schoolRepository.findSchoolById(deleteStudentRequest.getId());
+        if(foundSchool != null){
+            for(var studToDel : foundSchool.getStudents()){
+                if(Objects.equals(studToDel.getId(), deleteStudentRequest.getStudentId()))
+                    studentServices.delete(studToDel);
+                foundSchool.getStudents().remove(studToDel);
+                    schoolRepository.save(foundSchool);
+                    return "deleted successfully";
+                }
+
+            }
+        return null;
+        }
+
+
+
+
+
+
+    @Override
     public List<Student> getAllStudents() {
 
         return schoolRepository.findAll().get(0).getStudents();
     }
 
-    @Override
-    public String deleteStudent(DeleteStudentRequest deleteStudentRequest) {
-        var schoolFound = schoolRepository.findSchoolById(deleteStudentRequest.getId());
-        if (schoolFound != null) {
-            for (var studentToDel : schoolFound.getStudents()) {
-                if (Objects.equals(studentToDel.getId(), deleteStudentRequest.getStudentId())) {
-                    studentServices.deleteStudent(studentToDel);
-                    schoolFound.getStudents().remove(studentToDel);
-                    schoolRepository.save(schoolFound);
-                    return "student sucessfully deleted";
-                }
-            }
-        }
-        return " error";
-    }
+
 
     @Override
     public void deleteAll() {
         schoolRepository.deleteAll();
+        studentServices.deleteAll();
+        courseServices.deleteAll();
     }
 
     @Override
@@ -102,11 +110,11 @@ public class SchoolServiceImpl implements SchoolService {
     public CreateCourseResponse createCourse(CreateCourseRequest createCourseRequest) {
         Course course = new Course();
         course.setCourseName(createCourseRequest.getCourseName());
-        course.setCourseId(createCourseRequest.getCourseId());
         course.setCourseStatus(createCourseRequest.getCourseStatus());
         School schoolFound = schoolRepository.findSchoolBySchoolNameIgnoreCase("Semicolon");
+
         if (schoolFound != null) {
-            courseServices.saveNewCourse(course);
+          course =   courseServices.saveNewCourse(course);
             schoolFound.getCourses().add(course);
             schoolRepository.save(schoolFound);
         }
@@ -114,6 +122,7 @@ public class SchoolServiceImpl implements SchoolService {
             throw new SchoolExistDoesException(createCourseRequest.getSchoolName() + "does not exist");
         }
         CreateCourseResponse createCourseResponse = new CreateCourseResponse();
+        createCourseResponse.setCourseId(course.getId());
         createCourseResponse.setMessage(course.getCourseName() + "Course created successfully");
         return createCourseResponse;
     }
@@ -123,7 +132,7 @@ public class SchoolServiceImpl implements SchoolService {
         var foundSchool = schoolRepository.findSchoolById(deleteCourseRequest.getId());
         if (foundSchool != null) {
             for (var courseToDel : foundSchool.getCourses()) {
-                if (Objects.equals(courseToDel.getCourseId(), deleteCourseRequest.getCourseId())) {
+                if (Objects.equals(courseToDel.getId(), deleteCourseRequest.getCourseId())) {
                     courseServices.delete(courseToDel);
                     foundSchool.getCourses().remove(courseToDel);
                     schoolRepository.save(foundSchool);
@@ -143,11 +152,12 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public School findSchoolByName(String schoolName) {
-        School foundSchool = schoolRepository.findSchoolBySchoolNameIgnoreCase(schoolName);
-        if (foundSchool == null) {
-            throw new SchoolExistDoesException("School not found!");
-        }
-        return foundSchool;
+        return schoolRepository.findSchoolBySchoolName(schoolName);
+//        School foundSchool = schoolRepository.findSchoolBySchoolNameIgnoreCase(schoolName);
+//        if (foundSchool == null) {
+//            throw new SchoolExistDoesException("School not found!");
+//        }
+
     }
 
     @Override
@@ -177,8 +187,10 @@ public class SchoolServiceImpl implements SchoolService {
         School newSchool = new School();
         newSchool.setSchoolName(registerSchoolRequest.getSchoolName());
         newSchool.setSchoolLocation(registerSchoolRequest.getSchoolLocation());
-        schoolRepository.save(newSchool);
+        newSchool = schoolRepository.save(newSchool);
+
         RegisterSchoolResponse registerSchoolResponse = new RegisterSchoolResponse();
+        registerSchoolResponse.setSchoolId(newSchool.getId());
         registerSchoolResponse.setMessage(newSchool.getSchoolName() + " Registration successful");
         return registerSchoolResponse;
 
@@ -193,37 +205,30 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
 
     public UpdateCourseResponse updateCourse(UpdateCourseRequest updateCourseRequest) {
-        School school = schoolRepository.findSchoolBySchoolName(updateCourseRequest.getSchoolName());
-        if (school == null) {
-            throw new  SchoolExistDoesException("School cannot be found");
-        }
-        else {
-        Course course1 = courseRepository.findCourseById(updateCourseRequest.getCourseId());
-            school.getCourses().set(0, course1);
-            // school.getCourses().remove(course1);
+        var school = schoolRepository.findSchoolById(updateCourseRequest.getSchoolId());
+        if (school != null) {
+       Course course1 = courseServices.findCourseById(updateCourseRequest.getCourseId());
             if (updateCourseRequest.getCourseName() != null) {
                 course1.setCourseName(updateCourseRequest.getCourseName());
             }
             if (updateCourseRequest.getCourseCode() != null) {
                 course1.setCourseCode(updateCourseRequest.getCourseCode());
             }
-            if (updateCourseRequest.getCourseId() != null) {
-                course1.setCourseId(updateCourseRequest.getCourseId());
-            }
 
-
+            courseServices.saveNewCourse(course1);
             courseServices.reSaveNewCourse(course1);
             school.getCourses().add(course1);
             schoolRepository.save(school);
             UpdateCourseResponse updateCourseResponse = new UpdateCourseResponse();
-            updateCourseResponse.setMessage("course succesfully updated");
-            return updateCourseResponse;
+            updateCourseResponse.setMessage("course successfully updated");
 
+            return updateCourseResponse;
         }
 
 
-
+        return null;
     }
+
 
 
     @Override
@@ -255,6 +260,11 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     public School findSchoolBySchoolName(String schoolName) {
         return schoolRepository.findSchoolBySchoolName(schoolName);
+    }
+
+    @Override
+    public School findSchoolById(String schoolId) {
+        return schoolRepository.findSchoolById(schoolId);
     }
 
 
