@@ -20,18 +20,18 @@ class StudentServiceImplTest {
     void setUp() {
     }
 
-//
-//    @Test
-//    void studentCanBeToAdmitToSchool(){
-//        AdmitStudentRequest admitStudentRequest1 = new AdmitStudentRequest();
-//        AdmitStudentRequest admitStudentRequest2 = new AdmitStudentRequest();
-//        admitStudentRequest2.setStudentAge("13");
-//        admitStudentRequest2.setStudentFirstName("Demilade");
-//        admitStudentRequest2.setStudentLastName("Eunice");
-//        admitStudentRequest2.setEmailAddress("Eunice");
-//        studentService.admitStudent(admitStudentRequest2);
-//        assertEquals(1, studentRepository.count());
-//
-//
-//    }
+
+    @Test
+    void studentCanBeToAdmitToSchool(){
+        AdmitStudentRequest admitStudentRequest1 = new AdmitStudentRequest();
+        AdmitStudentRequest admitStudentRequest2 = new AdmitStudentRequest();
+        admitStudentRequest2.setStudentAge("13");
+        admitStudentRequest2.setStudentFirstName("Demilade");
+        admitStudentRequest2.setStudentLastName("Eunice");
+        admitStudentRequest2.setEmailAddress("Eunice");
+        studentService.admitStudent(admitStudentRequest2);
+        assertEquals(1, studentRepository.count());
+
+
+    }
 }

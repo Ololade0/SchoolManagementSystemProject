@@ -1,5 +1,6 @@
 package Africa.semicolon.schoolProject.data.repository;
 
+import Africa.semicolon.schoolProject.data.model.School;
 import Africa.semicolon.schoolProject.data.model.Student;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
@@ -11,5 +12,6 @@ public interface StudentRepository extends MongoRepository<Student, String> {
      Student findStudentByEmail(String email);
 
 
+    School findSchoolByName(String schoolName);
 }
 

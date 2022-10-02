@@ -1,6 +1,9 @@
 package Africa.semicolon.schoolProject.services;
 
 
+import Africa.semicolon.schoolProject.data.model.Course;
+import Africa.semicolon.schoolProject.data.model.School;
+import Africa.semicolon.schoolProject.data.model.Student;
 import Africa.semicolon.schoolProject.dto.request.RegisterSchoolRequest;
 import Africa.semicolon.schoolProject.dto.request.*;
 import Africa.semicolon.schoolProject.dto.response.RegisterSchoolResponse;
@@ -17,6 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class SchoolServiceImplTest {
     @Autowired
     private SchoolService schoolService;
+    @Autowired
+            private StudentService studentService;
 
     RegisterSchoolResponse response;
 
@@ -39,6 +44,7 @@ public class SchoolServiceImplTest {
     @Test
     void schoolCanBeRegister() {
         assertEquals(1, schoolService.totalUsers());
+
     }
 
     @Test
@@ -101,7 +107,6 @@ public class SchoolServiceImplTest {
     void schoolCanCreateCourse() {
         CreateCourseRequest createCourseRequest = new CreateCourseRequest();
         createCourseRequest.setCourseName("python");
-
         schoolService.createCourse(createCourseRequest);
         assertEquals(1, schoolService.size());
 
@@ -167,6 +172,35 @@ public class SchoolServiceImplTest {
         updateCourseRequest.setCourseName("ruby");
         schoolService.updateCourse(updateCourseRequest);
         assertEquals("ruby", schoolService.getAllCourses().get(0).getCourseName());
+
+    }
+    @Test
+    void testThatStudentCanSElectCourse(){
+        CreateCourseRequest createCourseRequest = new CreateCourseRequest();
+        createCourseRequest.setCourseStatus("true");
+        createCourseRequest.setCourseName("javascript");
+        schoolService.createCourse(createCourseRequest);
+
+        AdmitStudentRequest admitStudentRequest = new AdmitStudentRequest();
+        admitStudentRequest.setStudentFirstName("Ashaks");
+        admitStudentRequest.setStudentLastName("Ololade");
+        admitStudentRequest.setEmailAddress("Ololade@gmail.com");
+        admitStudentRequest.setStudentAge("32");
+        admitStudentRequest.setGender("Female");
+        admitStudentRequest.setSchoolName("Semicolon");
+        schoolService.admitStudent(admitStudentRequest);
+
+        SelectCourseRequest selectCourseRequest = new SelectCourseRequest();
+        selectCourseRequest.setCourseName("");
+        studentService.selectCourse(selectCourseRequest);
+
+
+
+
+
+
+
+
 
     }
 }
