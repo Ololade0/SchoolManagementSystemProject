@@ -1,14 +1,18 @@
 package Africa.semicolon.schoolProject.services;
 
 
+import Africa.semicolon.schoolProject.data.model.Course;
 import Africa.semicolon.schoolProject.data.model.School;
-import Africa.semicolon.schoolProject.dto.request.RegisterSchoolRequest;
-import Africa.semicolon.schoolProject.dto.request.UpdateSchoolProfileRequest;
+import Africa.semicolon.schoolProject.data.model.Student;
+import Africa.semicolon.schoolProject.dto.request.*;
+import Africa.semicolon.schoolProject.dto.response.AdmitStudentResponse;
+import Africa.semicolon.schoolProject.dto.response.RegisterCourseResponse;
+import Africa.semicolon.schoolProject.dto.response.UpdateCourseResponse;
+import Africa.semicolon.schoolProject.dto.response.UpdateStudentProfileResponse;
 
 import java.util.List;
 
 public interface SchoolService {
-
 
     School registerSchool(RegisterSchoolRequest registerSchoolRequest);
 
@@ -25,4 +29,37 @@ public interface SchoolService {
 
 
     School updateSchoolProfile(UpdateSchoolProfileRequest updateSchoolProfileRequest);
+
+    AdmitStudentResponse admitStudent(AdmitStudentRequest admitStudentRequest);
+
+
+
+    long totalNumberOfStudents();
+
+    void deleteAllStudents();
+
+    Student findStudentById(GetStudentRequest getStudentRequest);
+
+    Student findStudentsById(String studentI);
+
+    String deleteStudentById(DeleteStudentRequest deleteAllStudentRequest);
+
+    List<Student> findAllStudents();
+
+    UpdateStudentProfileResponse updateStudentProfile(UpdatedStudentProfileRequest updatedStudentProfileRequest);
+
+    RegisterCourseResponse createCourse(RegisterCourseRequest createCourseRequest);
+
+    long totalNumberOfCourses();
+
+    void deleteAllCourses();
+
+
+    String deleteCourseById(DeleteCourseRequest deleteCourseRequest);
+
+    Course findCourseById(String courseId);
+
+    List<Course> findAllCourses();
+
+    UpdateCourseResponse updateCourseProfile(UpdateCourseRequest updateCourseRequest);
 }

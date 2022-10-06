@@ -2,7 +2,11 @@ package Africa.semicolon.schoolProject.data.model;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Setter
@@ -10,6 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 @Document("student")
 public class Student {
     @Id
@@ -19,6 +24,8 @@ public class Student {
     private String gender;
     private String studentAge;
     private String email;
+    @DBRef
+    private List<Course> courses = new ArrayList<>();
 
 
 }

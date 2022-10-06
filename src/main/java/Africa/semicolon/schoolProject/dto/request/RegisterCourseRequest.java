@@ -9,13 +9,10 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @ToString
-public class UpdateCourseRequest {
+public class RegisterCourseRequest {
     private String schoolId;
-    private String courseId;
+    private String studentId;
+    public String courseCode;
     private String courseName;
-    private String courseCode;
     private String courseStatus;
-
-
-
 }

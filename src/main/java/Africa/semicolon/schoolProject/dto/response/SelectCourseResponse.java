@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @ToString
-public class UpdateCourseResponse {
+public class SelectCourseResponse {
     private String message;
+    private String courseId;
 }

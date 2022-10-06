@@ -1,8 +1,14 @@
 package Africa.semicolon.schoolProject.services;
 
+import Africa.semicolon.schoolProject.data.model.Course;
 import Africa.semicolon.schoolProject.data.model.Student;
 import Africa.semicolon.schoolProject.dto.request.AdmitStudentRequest;
+import Africa.semicolon.schoolProject.dto.request.RegisterCourseRequest;
+
+import Africa.semicolon.schoolProject.dto.request.SelectCourseRequest;
 import Africa.semicolon.schoolProject.dto.request.UpdatedStudentProfileRequest;
+
+import Africa.semicolon.schoolProject.dto.response.RegisterSchoolResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,6 +24,14 @@ class StudentServiceImplTest {
     @Autowired
     private StudentService studentService;
     Student savedStudent;
+    RegisterSchoolResponse registeredCourses;
+
+    @AfterEach
+    void tearDown() {
+        studentService.deleteAll();
+        studentService.deleteAllCourses();
+
+    }
 
     @BeforeEach
     void setUp() {
@@ -29,14 +43,17 @@ class StudentServiceImplTest {
                 .studentGender("Female")
                 .build();
         savedStudent =   studentService.admitstudent(admitStudentRequest);
+        RegisterCourseRequest registerCourseRequest = RegisterCourseRequest
+                .builder()
+                .courseName("Java")
+                .courseCode("101")
+                .build();
+    registeredCourses = studentService.activatedCourses(registerCourseRequest);
+
 
     }
 
-    @AfterEach
-    void tearDown() {
-        studentService.deleteAll();
 
-    }
     @Test
     public  void testThatStudentCanBeCreated(){
         Student student = Student.builder()
@@ -59,7 +76,7 @@ class StudentServiceImplTest {
                 .studentGender("Female")
                 .build();
         studentService.admitstudent(admitStudentRequest);
-        assertEquals(2, studentService.TotalNUmbersOfStudent());
+        assertEquals(2, studentService.totalNumbersOfStudent());
     }
 
     @Test
@@ -78,13 +95,13 @@ class StudentServiceImplTest {
     @Test
     public  void testThatAllStudentCanBeDeleted(){
         studentService.deleteAll();
-        assertEquals(0, studentService.TotalNUmbersOfStudent());
+        assertEquals(0, studentService.totalNumbersOfStudent());
     }
 
     @Test
     public void testThatStudentCanBeDeletedById(){
         studentService.deleteById(savedStudent.getId());
-        assertEquals(0, studentService.TotalNUmbersOfStudent());
+        assertEquals(0, studentService.totalNumbersOfStudent());
     }
     @Test
     public void testThatStudentCanBeUpdated(){
@@ -101,6 +118,23 @@ class StudentServiceImplTest {
         assertEquals("Eunice", studentService.findAllStudent().get(0).getStudentFirstName());
         assertEquals("Demilade", studentService.findAllStudent().get(0).getStudentLastName());
 
+    }
+    @Test
+    public void testThatStudentCanARegisterAllCourses(){
+        assertEquals(1, studentService.getTotalOfActivatedCourses());
+        assertEquals("Java", studentService.findAllCourses().get(0).getCourseName());
+
+    }
+    @Test
+    public void studentCanSelectCourseById(){
+        SelectCourseRequest selectCourseRequest = SelectCourseRequest
+                .builder()
+                .studentId(savedStudent.getId())
+                .courseId(registeredCourses.getCourseId())
+
+                .build();
+       var selectedCourse =  studentService.selectCourseById(selectCourseRequest);
+        assertThat(selectedCourse.getCourseId()).isEqualTo(registeredCourses.getCourseId());
     }
 
 

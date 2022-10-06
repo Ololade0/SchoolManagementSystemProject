@@ -1,9 +1,14 @@
 package Africa.semicolon.schoolProject.dto.response;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@ToString
 public class RegisterSchoolResponse {
     private String message;
-    private String schoolId;
+    private String courseId;
 }

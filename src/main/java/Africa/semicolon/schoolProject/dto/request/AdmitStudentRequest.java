@@ -10,7 +10,7 @@ import org.springframework.data.annotation.Id;
 @Builder
 @ToString
 public class AdmitStudentRequest {
-    private String studentId;
+    private String schoolId;
     private String studentFirstName;
     private String studentLastName;
     private String emailAddress;

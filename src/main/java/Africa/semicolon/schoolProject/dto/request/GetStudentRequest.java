@@ -5,12 +5,6 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class DeleteStudentRequest {
-    private String schoolId;
+public class GetStudentRequest {
     private String id;
-    private String studentName;
-    private String studentAge;
-
-
-
 }

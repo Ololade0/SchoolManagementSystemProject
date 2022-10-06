@@ -9,6 +9,7 @@ import lombok.*;
 @Builder
 @ToString
 public class UpdatedStudentProfileRequest {
+    private String schoolId;
     private String studentId;
     private String studentFirstName;
     private String studentLastName;

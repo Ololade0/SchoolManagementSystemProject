@@ -13,10 +13,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document("course")
 public class Course {
     @Id
-    private Long id;
-    private Long courseName;
+    private String id;
+    private String courseName;
     private String courseCode;
     private String courseStatus;
+
 
 
 

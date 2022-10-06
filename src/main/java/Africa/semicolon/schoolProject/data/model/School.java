@@ -25,6 +25,4 @@ public class School {
 @DBRef
     private List<Course> courses = new ArrayList<>();
 
-
-
 }
