@@ -2,11 +2,11 @@ package Africa.semicolon.schoolProject.dto.request;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.mongodb.core.mapping.Document;
+
 
 @Data
 @NoArgsConstructor
-@Document
+//@Document
 public class DeleteStudentRequest {
     private String id;
     private String firstName;

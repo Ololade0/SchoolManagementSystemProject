@@ -1,18 +1,20 @@
 package Africa.semicolon.schoolProject.data.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Data
-@Document
+
+@Setter
+@Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Document("course")
 public class Course {
     @Id
-    private String id;
-
-    private String courseName;
+    private Long id;
+    private Long courseName;
     private String courseCode;
     private String courseStatus;
 

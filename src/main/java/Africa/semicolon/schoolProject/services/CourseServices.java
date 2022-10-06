@@ -1,20 +1,8 @@
 package Africa.semicolon.schoolProject.services;
 
-import Africa.semicolon.schoolProject.data.model.Course;
 
 
 
 public interface CourseServices {
-
-    Course saveNewCourse(Course newCourse);
-
-    void delete(Course courseToDel);
-
-    Course getCourseByName(String courseName);
-
-    Course findCourseById(String id);
-
-    Course reSaveNewCourse(Course course1);
-
-    void deleteAll();
+;
 }

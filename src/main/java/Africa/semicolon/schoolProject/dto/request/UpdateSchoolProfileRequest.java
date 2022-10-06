@@ -8,11 +8,8 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @ToString
-public class RegisterSchoolRequest {
-    private String id;
+public class UpdateSchoolProfileRequest {
+    private String schoolId;
     private String schoolName;
     private String schoolLocation;
-    private String schoolAddress;
-
-
 }

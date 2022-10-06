@@ -2,36 +2,23 @@ package Africa.semicolon.schoolProject.services;
 
 import Africa.semicolon.schoolProject.data.model.Student;
 import Africa.semicolon.schoolProject.dto.request.AdmitStudentRequest;
-import Africa.semicolon.schoolProject.dto.request.SelectCourseRequest;
-import Africa.semicolon.schoolProject.dto.response.AdmitStudentResponse;
-import Africa.semicolon.schoolProject.dto.response.SelectCourseReponse;
+import Africa.semicolon.schoolProject.dto.request.UpdatedStudentProfileRequest;
 
 import java.util.List;
 
 public interface StudentService {
-    void deleteStudent(Student student);
 
-    Student findStudentById(String studentId);
+    Student admitstudent(AdmitStudentRequest admitStudentRequest);
 
-    Student saveNewStudent(Student student);
-
-    List<Student> getAllStudents();
-
-
-
-    long size();
-
-
-
-    Student getStudentByEmail(String email);
-
-    Student findStudentByEmail(String email);
-
-    void delete(Student studToDel);
+     long TotalNUmbersOfStudent();
 
     void deleteAll();
 
-    SelectCourseReponse selectCourse(SelectCourseRequest selectCourseRequest);
+    Student findStudentById(String id);
 
-    Student admitStudent(AdmitStudentRequest admitStudentRequest2);
+    List<Student> findAllStudent();
+
+    void deleteById(String id);
+
+    Student updateStudentProfile(UpdatedStudentProfileRequest updatedProfileRequest);
 }

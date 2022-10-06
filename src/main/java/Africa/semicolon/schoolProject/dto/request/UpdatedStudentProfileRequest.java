@@ -1,7 +1,6 @@
 package Africa.semicolon.schoolProject.dto.request;
 
 import lombok.*;
-import org.springframework.data.annotation.Id;
 
 @Setter
 @Getter
@@ -9,7 +8,7 @@ import org.springframework.data.annotation.Id;
 @NoArgsConstructor
 @Builder
 @ToString
-public class AdmitStudentRequest {
+public class UpdatedStudentProfileRequest {
     private String studentId;
     private String studentFirstName;
     private String studentLastName;
@@ -17,5 +16,4 @@ public class AdmitStudentRequest {
     private String schoolName;
     private String studentAge;
     private String studentGender;
-
 }
