@@ -9,6 +9,7 @@ import lombok.*;
 @Builder
 @ToString
 public class RegisterSchoolResponse {
+    private String id;
     private String message;
     private String courseId;
 }

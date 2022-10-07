@@ -5,16 +5,13 @@ import Africa.semicolon.schoolProject.data.model.Course;
 import Africa.semicolon.schoolProject.data.model.School;
 import Africa.semicolon.schoolProject.data.model.Student;
 import Africa.semicolon.schoolProject.dto.request.*;
-import Africa.semicolon.schoolProject.dto.response.AdmitStudentResponse;
-import Africa.semicolon.schoolProject.dto.response.RegisterCourseResponse;
-import Africa.semicolon.schoolProject.dto.response.UpdateCourseResponse;
-import Africa.semicolon.schoolProject.dto.response.UpdateStudentProfileResponse;
+import Africa.semicolon.schoolProject.dto.response.*;
 
 import java.util.List;
 
 public interface SchoolService {
 
-    School registerSchool(RegisterSchoolRequest registerSchoolRequest);
+    RegisterSchoolResponse registerSchool(RegisterSchoolRequest registerSchoolRequest);
 
     long TotalNumbersOfSchool();
 

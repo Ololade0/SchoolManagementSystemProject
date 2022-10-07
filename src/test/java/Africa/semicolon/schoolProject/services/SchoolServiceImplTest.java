@@ -8,6 +8,7 @@ import Africa.semicolon.schoolProject.dto.request.RegisterSchoolRequest;
 import Africa.semicolon.schoolProject.dto.request.*;
 import Africa.semicolon.schoolProject.dto.response.AdmitStudentResponse;
 import Africa.semicolon.schoolProject.dto.response.RegisterCourseResponse;
+import Africa.semicolon.schoolProject.dto.response.RegisterSchoolResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class SchoolServiceImplTest {
     @Autowired
     private SchoolService schoolService;
-    School savedSchool;
+    RegisterSchoolResponse savedSchool;
     AdmitStudentResponse savedStudent;
     RegisterCourseResponse savedCourse;
 

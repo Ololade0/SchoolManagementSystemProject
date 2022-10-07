@@ -3,10 +3,7 @@ import Africa.semicolon.schoolProject.data.model.Course;
 import Africa.semicolon.schoolProject.data.model.School;
 import Africa.semicolon.schoolProject.data.model.Student;
 import Africa.semicolon.schoolProject.dto.request.*;
-import Africa.semicolon.schoolProject.dto.response.AdmitStudentResponse;
-import Africa.semicolon.schoolProject.dto.response.RegisterCourseResponse;
-import Africa.semicolon.schoolProject.dto.response.UpdateCourseResponse;
-import Africa.semicolon.schoolProject.dto.response.UpdateStudentProfileResponse;
+import Africa.semicolon.schoolProject.dto.response.*;
 import Africa.semicolon.schoolProject.exception.SchoolDoesExistException;
 import Africa.semicolon.schoolProject.repository.SchoolRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +22,18 @@ public class SchoolServiceImpl implements SchoolService {
 
 
     @Override
-    public School registerSchool(RegisterSchoolRequest registerSchoolRequest) {
+    public RegisterSchoolResponse registerSchool(RegisterSchoolRequest registerSchoolRequest) {
         School newSchool = School.builder()
                 .schoolName(registerSchoolRequest.getSchoolName())
                 .schoolLocation(registerSchoolRequest.getSchoolLocation())
                 .build();
-        return schoolRepository.save(newSchool);
+         schoolRepository.save(newSchool);
+         return RegisterSchoolResponse.builder()
+                 .message("School successfully registered")
+                  .id(newSchool.getId())
+                 .build();
+
+
     }
 
     @Override
