@@ -8,10 +8,10 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @ToString
-public class RegisterSchoolResponse {
-    private String id;
+public class RegisterAllCourseResponse {
     private String message;
-    private String schoolName;
-    private String schoolLocation;
     private String courseId;
+    private String schoolId;
+    private String studentId;
+
 }

@@ -14,7 +14,6 @@ public class UpdatedStudentProfileRequest {
     private String studentFirstName;
     private String studentLastName;
     private String emailAddress;
-    private String schoolName;
     private String studentAge;
     private String studentGender;
 }

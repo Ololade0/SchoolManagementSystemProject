@@ -8,8 +8,6 @@ import lombok.Setter;
 public class DeleteStudentRequest {
     private String schoolId;
     private String id;
-    private String studentName;
-    private String studentAge;
 
 
 

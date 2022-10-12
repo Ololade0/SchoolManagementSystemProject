@@ -1,8 +1,7 @@
 package Africa.semicolon.schoolProject.services;
 
 import Africa.semicolon.schoolProject.data.model.Course;
-import Africa.semicolon.schoolProject.dto.request.RegisterCourseRequest;
-import Africa.semicolon.schoolProject.dto.request.SelectCourseRequest;
+import Africa.semicolon.schoolProject.dto.request.CreateCourseRequest;
 import Africa.semicolon.schoolProject.dto.request.UpdateCourseRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +20,7 @@ class CourseServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        RegisterCourseRequest createCourseRequest = RegisterCourseRequest
+        CreateCourseRequest createCourseRequest = CreateCourseRequest
                 .builder()
                 .courseName("Python")
                 .courseCode("101")
@@ -44,7 +43,7 @@ class CourseServiceImplTest {
         assertEquals("Python", newCourse.getCourseName());
     }
     @Test
-    public void CourseCanBeRegister(){
+    public void CourseCanBeCreate(){
         assertEquals(1, courseServices.totalNumberOfCourses());
     }
 
@@ -87,15 +86,7 @@ class CourseServiceImplTest {
 
 
     }
-    @Test
-    public void courseCanBeSelected(){
-        SelectCourseRequest selectCourseRequest = SelectCourseRequest
-                .builder()
-                .courseName("Python")
-                .courseCode("101")
-                .build();
-        courseServices.selectCourse(selectCourseRequest);
+
 
     }
 
-}

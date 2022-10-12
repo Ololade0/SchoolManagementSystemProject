@@ -1,16 +1,17 @@
 package Africa.semicolon.schoolProject.services;
 import Africa.semicolon.schoolProject.data.model.Course;
+import Africa.semicolon.schoolProject.data.model.School;
 import Africa.semicolon.schoolProject.data.model.Student;
 
-import Africa.semicolon.schoolProject.dto.request.AdmitStudentRequest;
+import Africa.semicolon.schoolProject.dto.request.*;
 
-import Africa.semicolon.schoolProject.dto.request.RegisterCourseRequest;
-import Africa.semicolon.schoolProject.dto.request.SelectCourseRequest;
-import Africa.semicolon.schoolProject.dto.request.UpdatedStudentProfileRequest;
-import Africa.semicolon.schoolProject.dto.response.RegisterSchoolResponse;
+import Africa.semicolon.schoolProject.dto.response.AdmitStudentResponse;
+import Africa.semicolon.schoolProject.dto.response.CreateCourseResponse;
+import Africa.semicolon.schoolProject.dto.response.RegisterAllCourseResponse;
 import Africa.semicolon.schoolProject.dto.response.SelectCourseResponse;
 import Africa.semicolon.schoolProject.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +23,9 @@ public class StudentServiceImpl implements StudentService {
     private StudentRepository studentRepository;
     @Autowired
     private CourseServices courseServices;
+  //  @Autowired
+  //  private SchoolService schoolService;
+
 
     @Override
     public Student admitstudent(AdmitStudentRequest admitStudentRequest) {
@@ -59,8 +63,9 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void deleteById(String id) {
+    public String deleteById(String id) {
         studentRepository.deleteById(id);
+        return "Student successfully deleted";
 
     }
 
@@ -83,31 +88,18 @@ public class StudentServiceImpl implements StudentService {
         return foundStudent;
     }
 
-
-
     @Override
     public List<Course> findAllCourses() {
         return courseServices.findAllCourses();
     }
 
-    @Override
-    public RegisterSchoolResponse activatedCourses(RegisterCourseRequest registerCourseRequest) {
-              //  Course foundCourse = courseServices.selectCourse(selectCourseRequest);
-        Course foundCourse = courseServices.registerCourse(registerCourseRequest);
-        Student foundStudent = studentRepository.findStudentById(registerCourseRequest.getStudentId());
-        if (foundStudent != null) {
-            foundStudent.getCourses().add(foundCourse);
-            studentRepository.save(foundStudent);
-        }
-        return RegisterSchoolResponse
-                .builder()
-                .message("Course successfully selected")
-                .courseId(foundCourse.getId())
-                .build();
-            }
+
+
+
 
     @Override
-    public long getTotalOfActivatedCourses() {
+    public long getTotalOfRegisteredCourses() {
+        
         return courseServices.totalNumberOfCourses();
     }
 
@@ -130,6 +122,26 @@ public class StudentServiceImpl implements StudentService {
                 .courseId(foundCourse.getId())
                 .build();
     }
+
+//    @Override
+//    public CreateCourseResponse registerAllCreatedCourses(CreateCourseRequest createCourseRequest) {
+//        Course foundCourse = courseServices.registerCourse(createCourseRequest);
+//        Student admittedStudent = studentRepository.findStudentById(createCourseRequest.getStudentId());
+//        if (admittedStudent != null) {
+//            admittedStudent.getCourses().add(foundCourse);
+//            studentRepository.save(admittedStudent);
+//        }
+//
+//        return CreateCourseResponse
+//                    .builder()
+//                   // .studentId(admittedStudent.getId())
+//                    .courseId(foundCourse.getId())
+//                    .message("Course successfully registered")
+//                    .build();
+//
+//
+//    }
+
 
 
 }

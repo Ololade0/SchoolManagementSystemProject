@@ -2,14 +2,14 @@ package Africa.semicolon.schoolProject.services;
 
 
 import Africa.semicolon.schoolProject.data.model.Course;
-import Africa.semicolon.schoolProject.dto.request.RegisterCourseRequest;
+import Africa.semicolon.schoolProject.dto.request.CreateCourseRequest;
 import Africa.semicolon.schoolProject.dto.request.SelectCourseRequest;
 import Africa.semicolon.schoolProject.dto.request.UpdateCourseRequest;
 
 import java.util.List;
 
 public interface CourseServices {
-    Course registerCourse(RegisterCourseRequest createCourseRequest);
+  //  Course registerAllCourse(RegisterAllCourseRequest registerAllCourseRequest);
 
     long totalNumberOfCourses();
 
@@ -19,11 +19,13 @@ public interface CourseServices {
 
     List<Course> findAllCourses();
 
-    void deleteById(String id);
+    String deleteById(String id);
 
     Course updateCourseProfile(UpdateCourseRequest updateCourseRequest);
 
     Course selectCourse(SelectCourseRequest selectCourseRequest);
+
+    Course registerCourse(CreateCourseRequest createCourseRequest);
 
     ;
 }

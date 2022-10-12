@@ -1,8 +1,10 @@
 package Africa.semicolon.schoolProject.services;
 import Africa.semicolon.schoolProject.data.model.Course;
-import Africa.semicolon.schoolProject.dto.request.RegisterCourseRequest;
+import Africa.semicolon.schoolProject.dto.request.CreateCourseRequest;
+
 import Africa.semicolon.schoolProject.dto.request.SelectCourseRequest;
 import Africa.semicolon.schoolProject.dto.request.UpdateCourseRequest;
+
 import Africa.semicolon.schoolProject.exception.CourseExistException;
 import Africa.semicolon.schoolProject.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,18 +16,17 @@ import java.util.List;
 public class CourseServiceImpl implements CourseServices{
     @Autowired
     private CourseRepository courseRepository;
-
     @Override
-    public Course registerCourse(RegisterCourseRequest createCourseRequest) {
-        Course newCourse = Course
+    public Course registerCourse(CreateCourseRequest createCourseRequest) {
+                Course newCourse = Course
                 .builder()
                 .courseName(createCourseRequest.getCourseName())
                 .courseCode(createCourseRequest.getCourseCode())
                 .courseStatus(createCourseRequest.getCourseStatus())
                 .build();
         return courseRepository.save(newCourse);
-    }
 
+    }
     @Override
     public long totalNumberOfCourses() {
         return courseRepository.count();
@@ -49,8 +50,9 @@ public class CourseServiceImpl implements CourseServices{
     }
 
     @Override
-    public void deleteById(String id) {
+    public String deleteById(String id) {
         courseRepository.deleteById(id);
+        return "Course successfully deleted";
 
     }
 
@@ -78,4 +80,6 @@ public class CourseServiceImpl implements CourseServices{
         }
     throw  new CourseExistException("Course Cannot be found");
     }
+
+
 }

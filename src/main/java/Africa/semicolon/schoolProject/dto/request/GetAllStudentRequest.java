@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class GetStudentRequest {
-    private String studentId;
+public class GetAllStudentRequest {
     private String schoolId;
+    private String studentId;
 }

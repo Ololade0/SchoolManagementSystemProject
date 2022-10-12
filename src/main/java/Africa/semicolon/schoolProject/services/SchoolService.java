@@ -20,9 +20,9 @@ public interface SchoolService {
 
     List<School> findAllSchools();
 
-    void deleteAllSchools();
+    String deleteAllSchools();
 
-    void deleteById(String id);
+    String deleteById(String id);
 
 
     School updateSchoolProfile(UpdateSchoolProfileRequest updateSchoolProfileRequest);
@@ -33,30 +33,34 @@ public interface SchoolService {
 
     long totalNumberOfStudents();
 
-    void deleteAllStudents();
+    String deleteAllStudents();
 
     Student findStudentById(GetStudentRequest getStudentRequest);
 
-    Student findStudentsById(String studentI);
 
-    String deleteStudentById(DeleteStudentRequest deleteAllStudentRequest);
 
-    List<Student> findAllStudents();
+    DeleteStudentResponse deleteStudentById(DeleteStudentRequest deleteStudentRequest);
+
 
     UpdateStudentProfileResponse updateStudentProfile(UpdatedStudentProfileRequest updatedStudentProfileRequest);
 
-    RegisterCourseResponse createCourse(RegisterCourseRequest createCourseRequest);
 
     long totalNumberOfCourses();
 
     void deleteAllCourses();
 
 
-    String deleteCourseById(DeleteCourseRequest deleteCourseRequest);
+    DeleteCourseResponse deleteCourseById(DeleteCourseRequest deleteCourseRequest);
 
-    Course findCourseById(String courseId);
-
-    List<Course> findAllCourses();
 
     UpdateCourseResponse updateCourseProfile(UpdateCourseRequest updateCourseRequest);
+
+
+    List<Student> findAllStudents(GetAllStudentRequest getAllStudentRequest);
+
+    Course findCourseById(GetACourseRequest getACourseRequest);
+
+    List<Course> findAllCourses(FindAllCourses findAllCourses);
+
+    CreateCourseResponse createCourse(CreateCourseRequest createCourseRequest);
 }

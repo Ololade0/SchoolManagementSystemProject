@@ -4,11 +4,10 @@ import lombok.*;
 
 @Setter
 @Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@ToString
-public class RegisterCourseResponse {
+public class CreateCourseResponse {
     private String message;
     private String courseId;
 

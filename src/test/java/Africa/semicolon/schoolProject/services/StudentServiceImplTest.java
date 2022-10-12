@@ -1,14 +1,8 @@
 package Africa.semicolon.schoolProject.services;
 
-import Africa.semicolon.schoolProject.data.model.Course;
 import Africa.semicolon.schoolProject.data.model.Student;
-import Africa.semicolon.schoolProject.dto.request.AdmitStudentRequest;
-import Africa.semicolon.schoolProject.dto.request.RegisterCourseRequest;
+import Africa.semicolon.schoolProject.dto.request.*;
 
-import Africa.semicolon.schoolProject.dto.request.SelectCourseRequest;
-import Africa.semicolon.schoolProject.dto.request.UpdatedStudentProfileRequest;
-
-import Africa.semicolon.schoolProject.dto.response.RegisterSchoolResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +18,7 @@ class StudentServiceImplTest {
     @Autowired
     private StudentService studentService;
     Student savedStudent;
-    RegisterSchoolResponse registeredCourses;
+
 
     @AfterEach
     void tearDown() {
@@ -43,12 +37,6 @@ class StudentServiceImplTest {
                 .studentGender("Female")
                 .build();
         savedStudent =   studentService.admitstudent(admitStudentRequest);
-        RegisterCourseRequest registerCourseRequest = RegisterCourseRequest
-                .builder()
-                .courseName("Java")
-                .courseCode("101")
-                .build();
-    registeredCourses = studentService.activatedCourses(registerCourseRequest);
 
 
     }
@@ -65,7 +53,6 @@ class StudentServiceImplTest {
                 .build();
         assertEquals("Adesuyi" , student.getStudentFirstName());
     }
-
     @Test
     public  void testThatStudentCanBeAdmited(){
         AdmitStudentRequest admitStudentRequest = AdmitStudentRequest.builder()
@@ -120,9 +107,13 @@ class StudentServiceImplTest {
 
     }
     @Test
-    public void testThatStudentCanARegisterAllCourses(){
-        assertEquals(1, studentService.getTotalOfActivatedCourses());
-        assertEquals("Java", studentService.findAllCourses().get(0).getCourseName());
+    public void testThatStudentCanRegisterAllCreatedCourses(){
+       CreateCourseRequest createCourseRequest = CreateCourseRequest
+                .builder()
+                .courseName("Java")
+                .courseCode("101")
+                .studentId(savedStudent.getId())
+                .build();
 
     }
     @Test
@@ -130,11 +121,10 @@ class StudentServiceImplTest {
         SelectCourseRequest selectCourseRequest = SelectCourseRequest
                 .builder()
                 .studentId(savedStudent.getId())
-                .courseId(registeredCourses.getCourseId())
 
                 .build();
-       var selectedCourse =  studentService.selectCourseById(selectCourseRequest);
-        assertThat(selectedCourse.getCourseId()).isEqualTo(registeredCourses.getCourseId());
+
+
     }
 
 
