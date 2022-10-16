@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @Service
@@ -134,21 +135,20 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     public DeleteStudentResponse deleteStudentById(DeleteStudentRequest deleteStudentRequest) {
         School foundSchool = schoolRepository.findSchoolById(deleteStudentRequest.getSchoolId());
-        if (foundSchool != null) {
-            for (var studToDel : foundSchool.getStudents()) {
-                if (studToDel.getId().equalsIgnoreCase(deleteStudentRequest.getId())) {
-                    studentService.deleteById(studToDel.getId());
-                    foundSchool.getStudents().remove(studToDel.getId());
-                    schoolRepository.save(foundSchool);
+        List<Student> students = foundSchool.getStudents();
+        for (int i = 0; i < students.size(); i++) {
+            if(Objects.equals(students.get(i).getId(),deleteStudentRequest.getId()));
+            studentService.deleteById(deleteById(String.valueOf(students.remove(i))));
+            students.remove(i);
 
-                }
+            break;
+        }
                 DeleteStudentResponse deleteStudentResponse = new DeleteStudentResponse();
                 deleteStudentResponse.setMessage("Student successfully deleted");
                 return deleteStudentResponse;
             }
-        }
-        return null;
-    }
+
+
 
 
     @Override
@@ -190,6 +190,7 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     public DeleteCourseResponse deleteCourseById(DeleteCourseRequest deleteCourseRequest) {
         School foundSchool = schoolRepository.findSchoolById(deleteCourseRequest.getSchoolId());
+
         if (foundSchool != null) {
             for (var courseToDel : foundSchool.getCourses()) {
                 if (courseToDel.getId().equalsIgnoreCase(deleteCourseRequest.getCourseId())) {

@@ -223,6 +223,14 @@ public class SchoolServiceImplTest {
     }
     @Test
     public void testThatSchoolCanUpdateCourses(){
+
+
+        FindAllCourses findAllCourses = FindAllCourses
+                .builder()
+                .courseId(savedCourse.getCourseId())
+                .schoolId(savedSchool.getId())
+                .build();
+        schoolService.findAllCourses(findAllCourses);
         UpdateCourseRequest updateCourseRequest = UpdateCourseRequest
                 .builder()
                 .courseName("Javascript")
@@ -232,9 +240,9 @@ public class SchoolServiceImplTest {
                 .schoolId(savedSchool.getId())
                 .build();
         schoolService.updateCourseProfile(updateCourseRequest);
-//        assertEquals("Javascript", schoolService.findAllCourses().get(0).getCourseName());
-//        assertEquals("Disactivated", schoolService.findAllCourses().get(0).getCourseStatus());
-//        assertEquals("106", schoolService.findAllCourses().get(0).getCourseCode());
+       assertEquals("Javascript", schoolService.findAllCourses(findAllCourses).get(0).getCourseName());
+       assertEquals("Disactivated", schoolService.findAllCourses(findAllCourses).get(0).getCourseStatus());
+        assertEquals("106", schoolService.findAllCourses(findAllCourses).get(0).getCourseCode());
     }
 
 
