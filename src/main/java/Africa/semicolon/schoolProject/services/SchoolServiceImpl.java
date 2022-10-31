@@ -134,14 +134,18 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public DeleteStudentResponse deleteStudentById(DeleteStudentRequest deleteStudentRequest) {
-        School foundSchool = schoolRepository.findSchoolById(deleteStudentRequest.getSchoolId());
-        List<Student> students = foundSchool.getStudents();
-        for (int i = 0; i < students.size(); i++) {
-            if(Objects.equals(students.get(i).getId(),deleteStudentRequest.getId()));
-            studentService.deleteById(deleteById(String.valueOf(students.remove(i))));
-            students.remove(i);
+      School foundSchool = schoolRepository.findSchoolById(deleteStudentRequest.getSchoolId());
+      if(foundSchool!= null){
+          List<Student> students = foundSchool.getStudents();
+          for (int i = 0; i < students.size() ; i++) {
+              if(students.get(i).getId().equalsIgnoreCase(deleteStudentRequest.getId())){
+                  studentService.deleteById(deleteStudentRequest.getId());
+                  students.remove(students.get(i));
+                  schoolRepository.save(foundSchool);
+              }
 
-            break;
+          }
+
         }
                 DeleteStudentResponse deleteStudentResponse = new DeleteStudentResponse();
                 deleteStudentResponse.setMessage("Student successfully deleted");
@@ -190,21 +194,24 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     public DeleteCourseResponse deleteCourseById(DeleteCourseRequest deleteCourseRequest) {
         School foundSchool = schoolRepository.findSchoolById(deleteCourseRequest.getSchoolId());
-
-        if (foundSchool != null) {
-            for (var courseToDel : foundSchool.getCourses()) {
-                if (courseToDel.getId().equalsIgnoreCase(deleteCourseRequest.getCourseId())) {
-                    courseServices.deleteById(courseToDel.getId());
-                    foundSchool.getCourses().remove(courseToDel.getId());
+        if(foundSchool!= null){
+            List<Course> courses = foundSchool.getCourses();
+            for (int i = 0; i < courses.size() ; i++) {
+                if(courses.get(i).getId().equalsIgnoreCase(deleteCourseRequest.getCourseId())){
+                    courseServices.deleteById(deleteCourseRequest.getCourseId());
+                    courses.remove(courses.get(i));
                     schoolRepository.save(foundSchool);
+
                 }
-                DeleteCourseResponse deleteCourseResponse = new DeleteCourseResponse();
-                deleteCourseResponse. setMessage("Course successfully deleted");
-                return deleteCourseResponse;
+
             }
+
         }
-        return null;
+       return DeleteCourseResponse.builder()
+               .message("Course successfully deleted")
+               .build();
     }
+
 
 
     @Override

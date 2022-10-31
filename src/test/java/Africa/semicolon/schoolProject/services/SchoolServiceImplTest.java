@@ -189,8 +189,8 @@ public class SchoolServiceImplTest {
                 deleteCourseRequest.setCourseId(savedCourse.getCourseId());
                 deleteCourseRequest.setSchoolId(savedSchool.getId());
        DeleteCourseResponse deletedCourse =  schoolService.deleteCourseById(deleteCourseRequest);
-       assertEquals("", deletedCourse.getMessage());
-     //   assertEquals(0, schoolService.totalNumberOfCourses());
+       assertEquals("Course successfully deleted", deletedCourse.getMessage());
+       // assertEquals(0, schoolService.totalNumberOfCourses());
     }
     @Test
     public void testThatSchoolCanDeleteAllCourse(){
