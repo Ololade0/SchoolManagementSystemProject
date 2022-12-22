@@ -4,6 +4,8 @@ import Africa.semicolon.schoolProject.data.model.Course;
 import Africa.semicolon.schoolProject.data.model.Student;
 import Africa.semicolon.schoolProject.dto.request.*;
 import Africa.semicolon.schoolProject.dto.response.CreateCourseResponse;
+import Africa.semicolon.schoolProject.dto.response.LoginResponse;
+import Africa.semicolon.schoolProject.dto.response.RegisterAllCourseResponse;
 import Africa.semicolon.schoolProject.dto.response.SelectCourseResponse;
 
 import java.util.List;
@@ -37,7 +39,8 @@ public interface StudentService {
 
     SelectCourseResponse selectCourseById(SelectCourseRequest selectCourseRequest);
 
-  //  CreateCourseResponse registerAllCreatedCourses(CreateCourseRequest createCourseRequest);
+    SelectCourseResponse selectCourseByName(SelectCourseRequest selectCourseRequest);
 
-    // RegisterAllCourseResponse registerAllCourses(RegisterAllCourseRequest registerAllCourseRequest);
+
+    LoginResponse login(LoginRest loginRest);
 }

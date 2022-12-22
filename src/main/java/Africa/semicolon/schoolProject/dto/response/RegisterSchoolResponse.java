@@ -14,4 +14,11 @@ public class RegisterSchoolResponse {
     private String schoolName;
     private String schoolLocation;
     private String courseId;
+    private String email;
+
+    public String password;
+
+
 }
+
+

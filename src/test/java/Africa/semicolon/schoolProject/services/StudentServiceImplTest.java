@@ -2,7 +2,6 @@ package Africa.semicolon.schoolProject.services;
 
 import Africa.semicolon.schoolProject.data.model.Student;
 import Africa.semicolon.schoolProject.dto.request.*;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,6 +32,7 @@ class StudentServiceImplTest {
                 .studentFirstName("Adesuyi")
                 .studentLastName("Ololade")
                 .emailAddress("Ololade@gmail.com")
+                .password("1234")
                 .studentAge("20")
                 .studentGender("Female")
                 .build();
@@ -106,26 +106,21 @@ class StudentServiceImplTest {
         assertEquals("Demilade", studentService.findAllStudent().get(0).getStudentLastName());
 
     }
+
     @Test
-    public void testThatStudentCanRegisterAllCreatedCourses(){
-       CreateCourseRequest createCourseRequest = CreateCourseRequest
-                .builder()
-                .courseName("Java")
-                .courseCode("101")
-                .studentId(savedStudent.getId())
-                .build();
-
+    public void testThatStudentCanLogin() {
+        LoginRest loginRest = new LoginRest();
+        loginRest.setPassword(savedStudent.getPassword());
+        loginRest.setEmail(savedStudent.getEmail());
+        var email = studentService.login(loginRest);
+        assertEquals(200, email.getCode());
+        assertEquals("Login successful", email.getMessage());
     }
-    @Test
-    public void studentCanSelectCourseById(){
-        SelectCourseRequest selectCourseRequest = SelectCourseRequest
-                .builder()
-                .studentId(savedStudent.getId())
-
-                .build();
 
 
-    }
+
+
+
 
 
 

@@ -63,4 +63,6 @@ public interface SchoolService {
     List<Course> findAllCourses(FindAllCourses findAllCourses);
 
     CreateCourseResponse createCourse(CreateCourseRequest createCourseRequest);
+
+    LoginResponse  login(LoginRest loginRest);
 }

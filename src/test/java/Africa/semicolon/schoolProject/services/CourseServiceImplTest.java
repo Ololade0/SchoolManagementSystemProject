@@ -2,6 +2,7 @@ package Africa.semicolon.schoolProject.services;
 
 import Africa.semicolon.schoolProject.data.model.Course;
 import Africa.semicolon.schoolProject.dto.request.CreateCourseRequest;
+import Africa.semicolon.schoolProject.dto.request.SelectCourseRequest;
 import Africa.semicolon.schoolProject.dto.request.UpdateCourseRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -87,6 +88,24 @@ class CourseServiceImplTest {
 
     }
 
+    @Test
+    public void  courseCanBeSElected(){
+        SelectCourseRequest selectCourseRequest = new SelectCourseRequest();
+        selectCourseRequest.setCourseId(savedCourse.getId());
+        Course course = courseServices.selectCoursesById(selectCourseRequest);
+        assertThat(course.getId()).isNotNull();
 
     }
+
+    @Test
+    public void  courseCanBeSElectedBYName(){
+        Course course = courseServices.selectCoursesByName(savedCourse.getCourseName());
+        assertEquals("Python", course.getCourseName());
+
+
+    }
+
+
+
+}
 

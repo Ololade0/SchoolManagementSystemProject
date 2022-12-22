@@ -1,17 +1,12 @@
 package Africa.semicolon.schoolProject.services;
 import Africa.semicolon.schoolProject.data.model.Course;
-import Africa.semicolon.schoolProject.data.model.School;
 import Africa.semicolon.schoolProject.data.model.Student;
 
 import Africa.semicolon.schoolProject.dto.request.*;
-
-import Africa.semicolon.schoolProject.dto.response.AdmitStudentResponse;
-import Africa.semicolon.schoolProject.dto.response.CreateCourseResponse;
-import Africa.semicolon.schoolProject.dto.response.RegisterAllCourseResponse;
+import Africa.semicolon.schoolProject.dto.response.LoginResponse;
 import Africa.semicolon.schoolProject.dto.response.SelectCourseResponse;
 import Africa.semicolon.schoolProject.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,6 +27,7 @@ public class StudentServiceImpl implements StudentService {
         Student newStudent = Student.builder()
                 .studentFirstName(admitStudentRequest.getStudentFirstName())
                 .studentLastName(admitStudentRequest.getStudentLastName())
+                .password(admitStudentRequest.getPassword())
                 .studentAge(admitStudentRequest.getStudentAge())
                 .email(admitStudentRequest.getEmailAddress())
                 .gender(admitStudentRequest.getStudentGender())
@@ -111,10 +107,10 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public SelectCourseResponse selectCourseById(SelectCourseRequest selectCourseRequest) {
-        Course foundCourse = courseServices.selectCourse(selectCourseRequest);
+        Course foundCourse = courseServices.selectCoursesById(selectCourseRequest);
         Student foundStudent = studentRepository.findStudentById(selectCourseRequest.getStudentId());
         if(foundStudent != null){
-            foundStudent.getCourses().add(foundCourse);
+           foundStudent.getCourses().add(foundCourse);
             studentRepository.save(foundStudent);
         }
         return SelectCourseResponse.builder()
@@ -123,25 +119,41 @@ public class StudentServiceImpl implements StudentService {
                 .build();
     }
 
-//    @Override
-//    public CreateCourseResponse registerAllCreatedCourses(CreateCourseRequest createCourseRequest) {
-//        Course foundCourse = courseServices.registerCourse(createCourseRequest);
-//        Student admittedStudent = studentRepository.findStudentById(createCourseRequest.getStudentId());
-//        if (admittedStudent != null) {
-//            admittedStudent.getCourses().add(foundCourse);
-//            studentRepository.save(admittedStudent);
-//        }
-//
-//        return CreateCourseResponse
-//                    .builder()
-//                   // .studentId(admittedStudent.getId())
-//                    .courseId(foundCourse.getId())
-//                    .message("Course successfully registered")
-//                    .build();
-//
-//
-//    }
 
+    @Override
+    public SelectCourseResponse selectCourseByName(SelectCourseRequest selectCourseRequest) {
+       Course foundCourse = courseServices.selectCoursesByName(selectCourseRequest.getCourseName());
+        Student foundStudent = studentRepository.findStudentById(selectCourseRequest.getStudentId());
+        if(foundStudent != null){
+          foundStudent.getCourses().add(foundCourse);
+            studentRepository.save(foundStudent);
+        }
+        return SelectCourseResponse.builder()
+                .message("Course Successfully selected")
+                .courseId(foundCourse.getId())
+                .build();
+
+   }
+
+    @Override
+    public LoginResponse login(LoginRest loginRest) {
+        var foundStudent = studentRepository.findStudentByEmail(loginRest.getEmail());
+        if(foundStudent.isPresent() && foundStudent.get().getPassword().equals(loginRest.getPassword()));
+        return buildSuccessfulLogin(foundStudent.get());
+
+//   return LoginResponse.builder()
+//                .message("Login failed")
+//                .code(400)
+//                .build();
+
+}
+
+    private LoginResponse buildSuccessfulLogin(Student student) {
+        return LoginResponse.builder()
+                .code(200)
+                .message("Login successful")
+                .build();
+    }
 
 
 }

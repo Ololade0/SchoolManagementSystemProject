@@ -28,6 +28,8 @@ public class SchoolServiceImpl implements SchoolService {
     public RegisterSchoolResponse registerSchool(RegisterSchoolRequest registerSchoolRequest) {
         School newSchool = School.builder()
                 .schoolName(registerSchoolRequest.getSchoolName())
+                .bycrptedPassword(registerSchoolRequest.getPassword())
+                .email(registerSchoolRequest.getEmail())
                 .schoolLocation(registerSchoolRequest.getSchoolLocation())
                 .build();
             School foundSchool = schoolRepository.save(newSchool);
@@ -35,6 +37,7 @@ public class SchoolServiceImpl implements SchoolService {
                     .message("School successfully registered")
                     .id(foundSchool.getId())
                     .schoolName(foundSchool.getSchoolName())
+                    .email(foundSchool.getEmail())
                     .schoolLocation(foundSchool.getSchoolLocation())
                     .build();
         }
@@ -114,8 +117,6 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public String deleteAllStudents() {
-      //  School foundSchool = schoolRepository.findSchoolById("6340837aaddd974768b39679");
-       // if(foundSchool != null){
             studentService.deleteAll();
             return "All student successfully deleted";
         }
@@ -171,7 +172,7 @@ public class SchoolServiceImpl implements SchoolService {
         return UpdateStudentProfileResponse
                 .builder()
                 .id(foundStudent.getId())
-                .message("Student profile successfully updated ")
+                .message("Todo successfully updated ")
                 .build();
 
 
@@ -194,22 +195,22 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     public DeleteCourseResponse deleteCourseById(DeleteCourseRequest deleteCourseRequest) {
         School foundSchool = schoolRepository.findSchoolById(deleteCourseRequest.getSchoolId());
-        if(foundSchool!= null){
+
+        if (foundSchool != null) {
             List<Course> courses = foundSchool.getCourses();
-            for (int i = 0; i < courses.size() ; i++) {
-                if(courses.get(i).getId().equalsIgnoreCase(deleteCourseRequest.getCourseId())){
+            for (int i = 0; i < courses.size(); i++) {
+                if (courses.get(i).getId().equalsIgnoreCase(deleteCourseRequest.getCourseId())) {
                     courseServices.deleteById(deleteCourseRequest.getCourseId());
-                    courses.remove(courses.get(i));
+                    foundSchool.getCourses().remove(courses.get(i));
                     schoolRepository.save(foundSchool);
-
                 }
-
             }
-
         }
-       return DeleteCourseResponse.builder()
-               .message("Course successfully deleted")
-               .build();
+
+        return DeleteCourseResponse.builder()
+                .message("Course successfully deleted")
+                .build();
+
     }
 
 
@@ -239,8 +240,24 @@ public class SchoolServiceImpl implements SchoolService {
         return CreateCourseResponse.builder()
                 .message("Course successfully created")
                 .courseId(registeredCourse.getId())
+                .courseName(registeredCourse.getCourseName())
                 .build();
 
+    }
+
+    @Override
+    public LoginResponse login(LoginRest loginRest) {
+        var foundSchool = schoolRepository.findSchoolByEmail(loginRest.getEmail());
+        return foundSchool.map(this::buildSuccessfulLoginResponse).orElse(null);
+
+
+    }
+
+    private LoginResponse buildSuccessfulLoginResponse(School school) {
+        return LoginResponse.builder()
+                .code(200)
+                .message("Login successful")
+                .build();
     }
 
 

@@ -27,6 +27,28 @@ public class CourseServiceImpl implements CourseServices{
         return courseRepository.save(newCourse);
 
     }
+
+    @Override
+    public Course selectCoursesById(SelectCourseRequest selectCourseRequest) {
+        Course foundCourse = courseRepository.findCourseById(selectCourseRequest.getCourseId());
+        if(foundCourse != null){
+            courseRepository.save(foundCourse);
+            return foundCourse;
+        }
+        throw  new CourseExistException("Course Cannot be found");
+    }
+
+    @Override
+    public Course selectCoursesByName(String courseName) {
+        Course foundCourse = courseRepository.findCourseByCourseName(courseName);
+        if(foundCourse != null){
+            courseRepository.save(foundCourse);
+            return foundCourse;
+        }
+        throw  new CourseExistException("Course Cannot be found");
+
+    }
+
     @Override
     public long totalNumberOfCourses() {
         return courseRepository.count();
@@ -71,15 +93,7 @@ public class CourseServiceImpl implements CourseServices{
         return courseRepository.save(foundCourse);
     }
 
-    @Override
-    public Course selectCourse(SelectCourseRequest selectCourseRequest) {
-        Course foundCourse = courseRepository.findCourseById(selectCourseRequest.getCourseId());
-        if(foundCourse != null){
-            courseRepository.save(foundCourse);
-            return foundCourse;
-        }
-    throw  new CourseExistException("Course Cannot be found");
-    }
+//    }
 
 
 }

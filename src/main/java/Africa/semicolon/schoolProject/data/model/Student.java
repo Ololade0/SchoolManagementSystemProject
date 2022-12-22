@@ -24,6 +24,7 @@ public class Student {
     private String gender;
     private String studentAge;
     private String email;
+    private String password;
     @DBRef
     private List<Course> courses = new ArrayList<>();
 

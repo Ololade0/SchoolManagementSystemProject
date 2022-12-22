@@ -23,6 +23,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class SchoolServiceImplTest {
     @Autowired
     private SchoolService schoolService;
+
+    @Autowired
+    private StudentService studentService;
     RegisterSchoolResponse savedSchool;
     AdmitStudentResponse savedStudent;
     CreateCourseResponse savedCourse;
@@ -40,6 +43,8 @@ public class SchoolServiceImplTest {
         RegisterSchoolRequest registerSchoolRequest = RegisterSchoolRequest
                 .builder()
                 .schoolLocation("Sabo")
+                .email("Semicolon@gmail.com")
+                .password("1234")
                 .schoolName("Semicolon")
                 .build();
        savedSchool =  schoolService.registerSchool(registerSchoolRequest);
@@ -60,6 +65,7 @@ public class SchoolServiceImplTest {
                 .courseName("Java")
                 .courseCode("101")
                 .courseStatus("activated")
+               .schoolId(savedSchool.getId())
                 .build();
       savedCourse =   schoolService.createCourse(createCourseRequest);
 
@@ -164,6 +170,9 @@ public class SchoolServiceImplTest {
     }
     @Test
     public void testThatSchoolCanUpdateStudentProfiles(){
+        GetAllStudentRequest getAllStudentRequest = new GetAllStudentRequest();
+        getAllStudentRequest.setSchoolId(savedSchool.getId());
+        schoolService.findAllStudents(getAllStudentRequest);
         UpdatedStudentProfileRequest updatedStudentProfileRequest = UpdatedStudentProfileRequest
                 .builder()
                 .studentFirstName("Ololade")
@@ -177,6 +186,8 @@ public class SchoolServiceImplTest {
         updatedStudentProfileRequest.setStudentId(savedStudent.getStudentId());
        UpdateStudentProfileResponse response =  schoolService.updateStudentProfile(updatedStudentProfileRequest);
        assertEquals("Student profile successfully updated ", response.getMessage());
+       assertEquals("Ololade", schoolService.findAllSchools().get(0).getStudents().get(0).getStudentFirstName());
+       assertEquals("Temidayo", schoolService.findAllSchools().get(0).getStudents().get(0).getStudentLastName());
        assertThat(response.getId()).isNotNull();
     }
     @Test
@@ -189,8 +200,7 @@ public class SchoolServiceImplTest {
                 deleteCourseRequest.setCourseId(savedCourse.getCourseId());
                 deleteCourseRequest.setSchoolId(savedSchool.getId());
        DeleteCourseResponse deletedCourse =  schoolService.deleteCourseById(deleteCourseRequest);
-       assertEquals("Course successfully deleted", deletedCourse.getMessage());
-       // assertEquals(0, schoolService.totalNumberOfCourses());
+        assertEquals(0, schoolService.totalNumberOfCourses());
     }
     @Test
     public void testThatSchoolCanDeleteAllCourse(){
@@ -243,6 +253,40 @@ public class SchoolServiceImplTest {
        assertEquals("Javascript", schoolService.findAllCourses(findAllCourses).get(0).getCourseName());
        assertEquals("Disactivated", schoolService.findAllCourses(findAllCourses).get(0).getCourseStatus());
         assertEquals("106", schoolService.findAllCourses(findAllCourses).get(0).getCourseCode());
+    }
+
+    @Test
+    public void studentCanSelectCourseByCourseName(){
+        SelectCourseRequest selectCourseRequest = SelectCourseRequest
+                .builder()
+                .courseName(savedCourse.getCourseName())
+                .studentId(savedStudent.getStudentId())
+                .build();
+       SelectCourseResponse response =  studentService.selectCourseByName(selectCourseRequest);
+        assertEquals("Course Successfully selected", response.getMessage());
+        assertThat(response.getCourseId()).isNotNull();
+    }
+
+    @Test
+    public void studentCanSelectCourseById(){
+        SelectCourseRequest selectCourseRequest = SelectCourseRequest
+                .builder()
+                .studentId(savedStudent.getStudentId())
+                .courseId(savedCourse.getCourseId())
+                .build();
+        SelectCourseResponse response =  studentService.selectCourseById(selectCourseRequest);
+        assertEquals("Course Successfully registered", response.getMessage());
+        assertThat(response.getCourseId()).isNotNull();
+    }
+
+    @Test
+    public void testThatSchoolCanLogin() {
+        LoginRest loginRest = new LoginRest();
+        loginRest.setPassword(savedSchool.getPassword());
+        loginRest.setEmail(savedSchool.getEmail());
+        var email = schoolService.login(loginRest);
+        assertEquals(200, email.getCode());
+        assertEquals("Login successful", email.getMessage());
     }
 
 

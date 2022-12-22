@@ -20,6 +20,8 @@ public class School {
     private String id;
     private String schoolName;
     private String schoolLocation;
+    private String email;
+    private String bycrptedPassword;
     @DBRef
     private List<Student> students = new ArrayList<>();
 @DBRef

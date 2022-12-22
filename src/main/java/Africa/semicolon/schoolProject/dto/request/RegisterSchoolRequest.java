@@ -11,6 +11,8 @@ import lombok.*;
 public class RegisterSchoolRequest {
     private String id;
     private String schoolName;
+    private String password;
+    private String email;
     private String schoolLocation;
 
 

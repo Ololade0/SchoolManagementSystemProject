@@ -23,9 +23,12 @@ public interface CourseServices {
 
     Course updateCourseProfile(UpdateCourseRequest updateCourseRequest);
 
-    Course selectCourse(SelectCourseRequest selectCourseRequest);
 
     Course registerCourse(CreateCourseRequest createCourseRequest);
+
+    Course selectCoursesById(SelectCourseRequest selectCourseRequest);
+
+    Course selectCoursesByName(String courseName);
 
     ;
 }

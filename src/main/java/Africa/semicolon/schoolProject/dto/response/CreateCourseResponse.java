@@ -10,5 +10,6 @@ import lombok.*;
 public class CreateCourseResponse {
     private String message;
     private String courseId;
+    private String courseName;
 
 }

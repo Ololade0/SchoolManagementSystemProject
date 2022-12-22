@@ -16,5 +16,6 @@ public class AdmitStudentRequest {
     private String emailAddress;
     private String studentAge;
     private String studentGender;
+    private String password;
 
 }
