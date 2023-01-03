@@ -137,17 +137,10 @@ public class SchoolServiceImpl implements SchoolService {
     public DeleteStudentResponse deleteStudentById(DeleteStudentRequest deleteStudentRequest) {
       School foundSchool = schoolRepository.findSchoolById(deleteStudentRequest.getSchoolId());
       if(foundSchool!= null){
-          List<Student> students = foundSchool.getStudents();
-          for (int i = 0; i < students.size() ; i++) {
-              if(students.get(i).getId().equalsIgnoreCase(deleteStudentRequest.getId())){
-                  studentService.deleteById(deleteStudentRequest.getId());
-                  students.remove(students.get(i));
-                  schoolRepository.save(foundSchool);
-              }
+          studentService.deleteById(deleteStudentRequest.getId());
 
           }
 
-        }
                 DeleteStudentResponse deleteStudentResponse = new DeleteStudentResponse();
                 deleteStudentResponse.setMessage("Student successfully deleted");
                 return deleteStudentResponse;
@@ -198,13 +191,14 @@ public class SchoolServiceImpl implements SchoolService {
 
         if (foundSchool != null) {
             List<Course> courses = foundSchool.getCourses();
-            for (int i = 0; i < courses.size(); i++) {
-                if (courses.get(i).getId().equalsIgnoreCase(deleteCourseRequest.getCourseId())) {
-                    courseServices.deleteById(deleteCourseRequest.getCourseId());
-                    foundSchool.getCourses().remove(courses.get(i));
-                    schoolRepository.save(foundSchool);
-                }
-            }
+            courseServices.deleteById(deleteCourseRequest.getCourseId());
+//            for (int i = 0; i < courses.size(); i++) {
+//                if (courses.get(i).getId().equalsIgnoreCase(deleteCourseRequest.getCourseId())) {
+//                    courseServices.deleteById(deleteCourseRequest.getCourseId());
+//                    foundSchool.getCourses().remove(courses.get(i));
+//                    schoolRepository.save(foundSchool);
+//                }
+//            }
         }
 
         return DeleteCourseResponse.builder()
