@@ -33,7 +33,9 @@ public class CourseServiceImpl implements CourseServices{
         Course foundCourse = courseRepository.findCourseById(selectCourseRequest.getCourseId());
         if(foundCourse != null){
             courseRepository.save(foundCourse);
+            System.out.println(foundCourse);
             return foundCourse;
+
         }
         throw  new CourseExistException("Course Cannot be found");
     }

@@ -10,6 +10,7 @@ import Africa.semicolon.schoolProject.exception.CourseExistException;
 import Africa.semicolon.schoolProject.exception.SchoolDoesExistException;
 import Africa.semicolon.schoolProject.exception.StudentExistException;
 import Africa.semicolon.schoolProject.services.SchoolService;
+import Africa.semicolon.schoolProject.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,9 @@ import java.util.List;
 public class SchoolController {
     @Autowired
     private SchoolService schoolService;
+
+    @Autowired
+    private StudentService studentService;
 
 
     @PostMapping("school")

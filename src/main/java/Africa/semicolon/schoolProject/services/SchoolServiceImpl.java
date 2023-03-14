@@ -190,15 +190,7 @@ public class SchoolServiceImpl implements SchoolService {
         School foundSchool = schoolRepository.findSchoolById(deleteCourseRequest.getSchoolId());
 
         if (foundSchool != null) {
-            List<Course> courses = foundSchool.getCourses();
-            courseServices.deleteById(deleteCourseRequest.getCourseId());
-//            for (int i = 0; i < courses.size(); i++) {
-//                if (courses.get(i).getId().equalsIgnoreCase(deleteCourseRequest.getCourseId())) {
-//                    courseServices.deleteById(deleteCourseRequest.getCourseId());
-//                    foundSchool.getCourses().remove(courses.get(i));
-//                    schoolRepository.save(foundSchool);
-//                }
-//            }
+           courseServices.deleteById(deleteCourseRequest.getCourseId());
         }
 
         return DeleteCourseResponse.builder()

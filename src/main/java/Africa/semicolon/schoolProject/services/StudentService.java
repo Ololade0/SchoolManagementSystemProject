@@ -34,7 +34,7 @@ public interface StudentService {
 
     long getTotalOfRegisteredCourses();
 
-    void deleteAllCourses();
+    String deleteAllCourses();
 
 
     SelectCourseResponse selectCourseById(SelectCourseRequest selectCourseRequest);

@@ -94,6 +94,7 @@ class CourseServiceImplTest {
         selectCourseRequest.setCourseId(savedCourse.getId());
         Course course = courseServices.selectCoursesById(selectCourseRequest);
         assertThat(course.getId()).isNotNull();
+        assertEquals("Python",course.getCourseName());
 
     }
 

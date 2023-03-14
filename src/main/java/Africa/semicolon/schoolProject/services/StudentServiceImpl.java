@@ -100,8 +100,9 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void deleteAllCourses() {
+    public String deleteAllCourses() {
         courseServices.deleteAll();
+        return "All Courses successfully deleted";
 
     }
 
@@ -109,9 +110,11 @@ public class StudentServiceImpl implements StudentService {
     public SelectCourseResponse selectCourseById(SelectCourseRequest selectCourseRequest) {
         Course foundCourse = courseServices.selectCoursesById(selectCourseRequest);
         Student foundStudent = studentRepository.findStudentById(selectCourseRequest.getStudentId());
-        if(foundStudent != null){
-           foundStudent.getCourses().add(foundCourse);
-            studentRepository.save(foundStudent);
+        if(foundStudent != null) {
+            if (foundCourse != null) {
+            foundStudent.getCourses().add(foundCourse);
+                studentRepository.save(foundStudent);
+            }
         }
         return SelectCourseResponse.builder()
                 .message("Course Successfully registered")
@@ -141,10 +144,6 @@ public class StudentServiceImpl implements StudentService {
         if(foundStudent.isPresent() && foundStudent.get().getPassword().equals(loginRest.getPassword()));
         return buildSuccessfulLogin(foundStudent.get());
 
-//   return LoginResponse.builder()
-//                .message("Login failed")
-//                .code(400)
-//                .build();
 
 }
 

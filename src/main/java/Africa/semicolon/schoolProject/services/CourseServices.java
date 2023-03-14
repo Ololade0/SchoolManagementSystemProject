@@ -30,5 +30,5 @@ public interface CourseServices {
 
     Course selectCoursesByName(String courseName);
 
-    ;
+
 }
