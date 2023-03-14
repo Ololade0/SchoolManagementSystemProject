@@ -5,6 +5,7 @@ import Africa.semicolon.schoolProject.data.model.Student;
 import Africa.semicolon.schoolProject.dto.request.*;
 import Africa.semicolon.schoolProject.dto.response.LoginResponse;
 import Africa.semicolon.schoolProject.dto.response.SelectCourseResponse;
+import Africa.semicolon.schoolProject.exception.StudentExistException;
 import Africa.semicolon.schoolProject.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,22 +19,25 @@ public class StudentServiceImpl implements StudentService {
     private StudentRepository studentRepository;
     @Autowired
     private CourseServices courseServices;
-  //  @Autowired
-  //  private SchoolService schoolService;
 
 
     @Override
     public Student admitstudent(AdmitStudentRequest admitStudentRequest) {
-        Student newStudent = Student.builder()
-                .studentFirstName(admitStudentRequest.getStudentFirstName())
-                .studentLastName(admitStudentRequest.getStudentLastName())
-                .password(admitStudentRequest.getPassword())
-                .studentAge(admitStudentRequest.getStudentAge())
-                .email(admitStudentRequest.getEmailAddress())
-                .gender(admitStudentRequest.getStudentGender())
-                .build();
-        newStudent.setId(newStudent.getId());
-        return studentRepository.save(newStudent);
+        if (studentRepository.findStudentByEmail(admitStudentRequest.getEmailAddress()).isPresent()) {
+            throw new StudentExistException("Student with " + admitStudentRequest.getEmailAddress() + "already exist");
+        } else {
+            Student newStudent = Student.builder()
+                    .studentFirstName(admitStudentRequest.getStudentFirstName())
+                    .studentLastName(admitStudentRequest.getStudentLastName())
+                    .password(admitStudentRequest.getPassword())
+                    .studentAge(admitStudentRequest.getStudentAge())
+                    .email(admitStudentRequest.getEmailAddress())
+                    .gender(admitStudentRequest.getStudentGender())
+                    .build();
+            newStudent.setId(newStudent.getId());
+            return studentRepository.save(newStudent);
+
+        }
 
     }
 

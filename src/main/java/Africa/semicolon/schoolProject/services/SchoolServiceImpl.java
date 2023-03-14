@@ -4,6 +4,7 @@ import Africa.semicolon.schoolProject.data.model.School;
 import Africa.semicolon.schoolProject.data.model.Student;
 import Africa.semicolon.schoolProject.dto.request.*;
 import Africa.semicolon.schoolProject.dto.response.*;
+import Africa.semicolon.schoolProject.exception.SchoolAlreadyExistException;
 import Africa.semicolon.schoolProject.exception.SchoolDoesExistException;
 import Africa.semicolon.schoolProject.repository.SchoolRepository;
 import lombok.Data;
@@ -26,6 +27,9 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public RegisterSchoolResponse registerSchool(RegisterSchoolRequest registerSchoolRequest) {
+        if(schoolRepository.findSchoolBySchoolName(registerSchoolRequest.getSchoolName()).isPresent()){
+            throw new SchoolAlreadyExistException("School with name : " + registerSchoolRequest.getSchoolName() + "already exist");
+        }
         School newSchool = School.builder()
                 .schoolName(registerSchoolRequest.getSchoolName())
                 .bycrptedPassword(registerSchoolRequest.getPassword())

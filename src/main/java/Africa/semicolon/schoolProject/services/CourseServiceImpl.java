@@ -18,13 +18,18 @@ public class CourseServiceImpl implements CourseServices{
     private CourseRepository courseRepository;
     @Override
     public Course registerCourse(CreateCourseRequest createCourseRequest) {
-                Course newCourse = Course
-                .builder()
-                .courseName(createCourseRequest.getCourseName())
-                .courseCode(createCourseRequest.getCourseCode())
-                .courseStatus(createCourseRequest.getCourseStatus())
-                .build();
-        return courseRepository.save(newCourse);
+        if (courseRepository.findCourseByCourseName(createCourseRequest.getCourseName()) != null) {
+            throw new CourseExistException("Course already exist");
+        } else {
+            Course newCourse = Course
+                    .builder()
+                    .courseName(createCourseRequest.getCourseName())
+                    .courseCode(createCourseRequest.getCourseCode())
+                    .courseStatus(createCourseRequest.getCourseStatus())
+                    .build();
+            return courseRepository.save(newCourse);
+
+        }
 
     }
 

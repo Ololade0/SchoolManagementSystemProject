@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface SchoolRepository extends MongoRepository<School, String> {
     School findSchoolById(String schoolId);
     Optional<School>findSchoolByEmail(String email);
+    Optional<School>findSchoolBySchoolName(String schoolName);
 }
