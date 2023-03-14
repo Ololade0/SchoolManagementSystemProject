@@ -2,12 +2,11 @@ package Africa.semicolon.schoolProject.controller;
 
 import Africa.semicolon.schoolProject.data.model.Student;
 import Africa.semicolon.schoolProject.dto.request.*;
-import Africa.semicolon.schoolProject.dto.response.AdmitStudentResponse;
-import Africa.semicolon.schoolProject.dto.response.DeleteStudentResponse;
+
 import Africa.semicolon.schoolProject.dto.response.SelectCourseResponse;
-import Africa.semicolon.schoolProject.dto.response.UpdateStudentProfileResponse;
+
 import Africa.semicolon.schoolProject.exception.CourseExistException;
-import Africa.semicolon.schoolProject.exception.SchoolDoesExistException;
+
 import Africa.semicolon.schoolProject.exception.StudentDoesNotExistException;
 import Africa.semicolon.schoolProject.exception.StudentExistException;
 import Africa.semicolon.schoolProject.services.StudentService;
